@@ -1,3 +1,6 @@
+## Residual matlab documents
+*.asv
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof

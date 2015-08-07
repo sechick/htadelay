@@ -1,12 +1,12 @@
 # Sequential Experimentation with Delay
 
-DRAFT IN PROGRESS
+DRAFT IN PROGRESS: CODE BEING MIGRATED NOW FROM ANOTHER REPO.
 
 This repository contains Matlab code which implements several contributions from the paper:
 
 'A Bayesian Decision-Theoretic Model of Sequential Experimentation with Delayed Response' 
 
-by Stephen E. Chick, Martin Forster, and Paolo Pertile (2015, in submission).
+by Stephen E. Chick, Martin Forster, and Paolo Pertile (2015, in submission), preprint available at https://ideas.repec.org/p/yor/yorken/15-09.html.
 
 The code computes optimal stopping times for sequential experiments when samples are observed with delay. The code includes:
 

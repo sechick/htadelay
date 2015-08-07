@@ -8,7 +8,7 @@
 %
 % (c) 2014, S Chick
 % Created: 17 April 2014
-% Last touched: 17 April 2014
+% Last touched: 7 aug 2015
 % 
 % NEXT STEPS?
 % (*) Do functions for more frequentist statistics (be it PDE or be it
@@ -22,7 +22,6 @@
 % (*) Fix the list of parameters which are created by other routines for the
 % advanced and mat structures.
 %
-
 %'note: if DOPLOT is set to true, then NumPlots should be small '
 %'otherwise it takes long to run, but then the contour plots are '
 %'a bit wiggly. For smoother/better contour plots, set NumPlots '
@@ -30,46 +29,95 @@
 %'Also, move plots 4, 5, 6, 7 to different parts of screen if DOPLOT is on'
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-            % SECTION 1: Standard example analysis flow with several
-            % problem examples
+            % CHUNK: Set up directory structures, etc. and any other initialization which may be required.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+LocalDelaySetPaths;  % Default case: Sets up PATH of Matlab to get code for running. This file may be localized.
+%LocalDelaySetPaths('mydirectory') % Example usage if you have installed
+%delaycore and delaypaper directories into the directory 'mydirectory' on
+%your machine. Usually, LocalDelaySetPaths should not need this
+%localization, and the default usage (calling with no aguments, should be
+%adequate.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-LocalDelaySetPaths % Edit a local copy of this MACRO, don't check in on top of installed file.
+            % CHUNK: Standard example analysis flow with several problem examples
 
-% Test of calling structure using the optional arguments to
-% DelayInputConstructor. The following two example options result 
-% in identical values for basic and advanced.
-% OPTION 1:
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% To run an sequential experiment, one first needs to create two data structures (called
+% 'basic' and 'advanced') in order to specify the experiment. For details
+% on the fields, please see the documentation for DelayInputConstructor(),
+% or create these structures using the code, then explore their fields.
+%
+% 'basic' specifies most of the experimental specific information.
+% 'advanced' specifies special computation, plotting, and other analysis-specific information
+%
+% There are three options for doing this. Try out one of these three
+% options. In each case, a 'constructor' method is called, parameters might
+% then be tweaked, then a 'validator' method is called before computations
+% of the optimal stopping boundary can be done. The 'validator' checks if
+% all parameter values are sensible, and also computes some 'behind the
+% scenes' variables which are useful in the computation of the solution of
+% the PDE.
+%
+% OPTION 1: Construct default values, and then set those values
+% accordingly.
 [basic, advanced] = DelayInputConstructor();
 basic.c = 2.1; basic.theta = 0.999;
 advanced.filestring = 'test'; advanced.dirstring = 'wow'; advanced.simNumReps = 500; 
 advanced.saveplot = 1; advanced.DOPLOT = false;
-% OPTION 2:
+rval = true;
+[basic, advanced, rval, msgs] = DelayInputValidator( basic, advanced ) % now, validate the structure and compute some intermediave values
+
+% OPTION 2: Use the constructor while specifying {field, value}
+% combinations as follows.
 somebasicflags = {'c', 2.1, 'theta', 0.999};
 someadvancedflags = { 'filestring', 'test', 'dirstring', 'wow', 'simNumReps', 500, 'saveplot', 1, 'DOPLOT', false };
-[basic, advanced] = DelayInputConstructor(somebasicflags,someadvancedflags);
-% now, validate the structure
-[basic, advanced, rval, msgs] = DelayInputValidator( basic, advanced )
+[basic, advanced] = DelayInputConstructor(somebasicflags,someadvancedflags); % create the structures
+[basic, advanced, rval, msgs] = DelayInputValidator( basic, advanced ) % now, validate the structure and compute some intermediave values
+
+% OPTION 3; Create a file (like SetStents') which calls the
+% inputconstructor and sets a bunch of default parameter values. Then some
+% fields can be modified directly (followed by a call to validate the
+% parameters - always validate.
+if ~exist('fignum','var'), fignum = 20; end;
+[basic, advanced] = SetStents();
+advanced.DOPLOT = 0;
+%basic.tau = 10; 
+advanced.saveplot = true;
+[basic, advanced, rval, msgs] = DelayInputValidator( basic, advanced );
+
+% RUN THE ANALYSIS: After running one of the above three options, try the
+% following code in order to actually compute the optimal sampling policy
+% for the continuous time approximation to the discrete tie problem, then
+% run some Monte Carlo simulations of the discrete time sequential sampling
+% process based on those optimal sequential sampling policies
 if rval
-    [~, mat] = DelayCurvesRecur(basic, advanced);
-    [mat] = DelayStageOne(basic, advanced, mat ); 
-    if ~exist('fignum','var'), fignum = 20; end;
-    [fignum, mat] = DelayCurvesTheoretical(fignum, basic, advanced, mat );
-    fignum = DelayDoContours(fignum, basic, advanced, mat);        % Generate a bunch of contour plots
-    fignum = DelayPlotBayesInfo( fignum, basic, advanced, mat );
-    [ fignum, mat ] = DelaySimOverview( fignum, basic, advanced, mat );
-    fignum = DelaySimOutput( fignum, basic, advanced, mat );     % requires DelaySimOverview to have been called
+    [~, mat] = DelayCurvesRecur(basic, advanced);   % first compute the optimal stopping region for stage II (and IIII), from times [tau ... Tmax] (the free boundary PDE solution computation)
+    [mat] = DelayStageOne(basic, advanced, mat );   % next compute the optimal stage I experiment, from times [0 ... tau], and blend in the stage II solution
+    if ~exist('fignum','var'), fignum = 20; end;    % Check if variable 'fignum' exists or not, if not create it, so that figures can be plotted.
+    
+    [fignum, mat] = DelayCurvesTheoretical(fignum, basic, advanced, mat ); % Compute th
+    fignum = DelayDoContours(fignum, basic, advanced, mat);         % Generate a bunch of contour plots based on the optimal solution from PDE
+    fignum = DelayPlotBayesInfo( fignum, basic, advanced, mat );    % Plot some additional information
+    [ fignum, mat ] = DelaySimOverview( fignum, basic, advanced, mat ); % Run some Monte Carlo (MC) sample paths
+    fignum = DelaySimOutput( fignum, basic, advanced, mat );     % requires DelaySimOverview to have been called: plot the output for some MC runs.
 else
     msgs
 end
 
+%%%%%%%%%%%%%%% FIX FIX FIX TESTED TO HERE %%%%%%%%%%%%%%%
 
-% Test of calling structure using the optional arguments to check
-% computed boundaries with theoretical boundaries
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+            % CHUNK: Garbage patch.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% GARBAGE PATCH: These are examples of code which might be interesting to use for various debugging or sensitivity analysis.
+% Test of calling structure using the optional arguments to check computed boundaries with theoretical boundaries
 [basic, advanced] = DelayInputConstructor();
 basic.online = 0;
 basic.c = 260; basic.theta = 0.999; basic.ICost = 200000; basix.TMax = 3000; basic.tau = 2;

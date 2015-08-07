@@ -15,24 +15,22 @@ function [basic, advanced] = SetStents()
 % problem structure of the clinical trial.
 [basic, advanced] = DelayInputConstructor();
 
-
-s_Ymax =500000 ; %         % maximum value for Y ( must be > 0 )
-basic.PPatients = 100000;
+basic.PPatients = 2000000;
 studyyears = 7/12 + 1; % recruitment lasted 7 months, follow-up is one year
 delayinyears = 1;     % one month is 1/12.
 %CIhi = ;
 %Conflevel = ;
-basic.numpairs = 527;
+basic.numpairs = 529;
 postmean = 252;
 %stder = (CIhi - postmean) / norminv( 1 - (1-Conflevel)/2); 
 %basic.sigma = stder * sqrt(numpairs);
 %basic.mu0=postmean;
-basic.t0 = 40;
+basic.t0 = 20;
 basic.sigma = 17538; % I'LL TRY TO SEE WHETHER THIS IS CONSISTENT WITH WHAT ONE GETS BY USING THE SAME APPROACH AS IN THE OTHER FILE
-annualdiscountrate = .03;  % real valued number, with value like 0.05 for 5% discount rate
+annualdiscountrate = .01;  % real valued number, with value like 0.05 for 5% discount rate
 basic.ICost = 0;
 patientsperyear = basic.numpairs / (studyyears - delayinyears);  % maximum number of patients put into trial per year
-basic.tau = delayinyears * patientsperyear;
+basic.tau = round(delayinyears * patientsperyear);
 basic.TMax = 2000;
 basic.c = 200;
 %sigma0 = basic.sigma/sqrt(basic.t0); % no need to assign, will be computed
@@ -60,14 +58,13 @@ advanced.nochangeallowed = false;    % set to false (the better default) meaning
 
 %%%%%% Numerical computation parameters %%%%%%
 
-advanced.MinGridPerStdev = 80;    % minimum number of grid points per stdev of output, or negative to use dt=1
-% advanced.MinGridPerStdev = (basic.TMax-basic.t0)/s_step_t;    % if this is negative, code tries to use its negative as the delta-t
+advanced.MinGridPerStdev = 30;    % minimum number of grid points per stdev of output, or negative to use dt=1
 % advanced.MinGridPerStdev = 200; 
 
 % For plotting
 advanced.smoothed = true;   % true or false if curve smoothing is desired.
 advanced.DOPLOT = false; % put true or false depending if you do or do not want dynamic plots
-advanced.NumGridsForContours = 100; % number of time values for generating contour plots (also num plots in animation to use during recursion over t)
+advanced.NumGridsForContours = 80; % number of time values for generating contour plots (also num plots in animation to use during recursion over t)
 
 advanced.bigfontsize=16;
 advanced.smallfontsize=14;

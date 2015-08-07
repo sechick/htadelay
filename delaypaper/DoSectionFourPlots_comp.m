@@ -58,7 +58,7 @@ decidetime10 = outtime10 + floor(basic.tau) ;
 % Plotting the optimal stopping rule
 fignum = fignum + 1; figure(fignum); % always increment fignum and create a new figure
 hold off ; 
-tmpfontsize = 8;
+tmpfontsize = 10;
 plot( paths( 1:outtime6, 1 )', paths( 1 : outtime6, 7 )', 'k', paths( outtime6 + 1:decidetime6, 1 )', paths( outtime6 + 1:decidetime6, 7 )', ':k' ,'LineWidth',1 ) ; 
 hold on ; 
 %rect=[1200,-5000,100,100];
@@ -92,11 +92,11 @@ if length(graphicsuffix) == 0
     %text(  ( basic.t0 + basic.tau ) / 8.0,  -3000 , 'Fixed trial', 'Fontsize', tmpfontsize) ;
     text(  ( basic.t0 + basic.tau ) / 4.5 , 150 , 'Sequential trial', 'Fontsize', tmpfontsize) ;
     text(  ( basic.t0 + basic.tau ) / 4.5 , -150 , 'recruitment', 'Fontsize', tmpfontsize) ;
-    text(  ( basic.t0 + basic.tau ) / 4.5 , 5700 , 'Maximum extent', 'Fontsize', tmpfontsize) ;
-    text(  ( basic.t0 + basic.tau ) / 4.5 , 5400 , 'of stage I', 'Fontsize', tmpfontsize) ;
+    text(  ( basic.t0 + basic.tau ) / 5.5 , 5700 , 'Maximum extent', 'Fontsize', tmpfontsize) ;
+    text(  ( basic.t0 + basic.tau ) / 2.7 , 5400 , 'of stage I', 'Fontsize', tmpfontsize) ;
     text(  ( basic.t0 + basic.tau ) * 1.9,  5700 , 'Maximum extent of stage II', 'Fontsize', tmpfontsize) ;
-    text(  ( basic.t0 + basic.tau ) * 3.6,  5700 , 'Maximum extent', 'Fontsize', tmpfontsize) ;
-    text(  ( basic.t0 + basic.tau ) * 3.6,  5400 , 'of stage III', 'Fontsize', tmpfontsize) ;
+    text(  ( basic.t0 + basic.tau ) * 3.5,  5700 , 'Maximum extent', 'Fontsize', tmpfontsize) ;
+    text(  ( basic.t0 + basic.tau ) * 3.65,  5400 , 'of stage III', 'Fontsize', tmpfontsize) ;
 
 end
 ist0 = true ; % set to true if ABCD to be plotted at t0, false if to be plotted on horizontal axis
@@ -119,7 +119,7 @@ UtilSaveFigEpsPdf(fignum,dirname,strcat('paths',graphicsuffix),'-r600');
 
 pause ; 
 
-STOP
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%% For Other figures, use estimates based on a lot of sample
 %%%%%% replications. so, the simulations need to be rerun.

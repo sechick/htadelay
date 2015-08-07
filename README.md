@@ -1,5 +1,7 @@
 # Sequential Experimentation with Delay
 
+DRAFT IN PROGRESS
+
 This repository contains Matlab code which implements several contributions from the paper:
 
 'A Bayesian Decision-Theoretic Model of Sequential Experimentation with Delayed Response' 

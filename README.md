@@ -22,8 +22,10 @@ The code computes optimal stopping times for sequential experiments when samples
 1. Download the matlab code from this repo. When installed locally, there should be files DelayDriver.m and two directories, 'delaycore' and 'delaypaper', and potentially several other files.
 2. [Optional] Update the LocalDelaySetPaths.m file to contain local directory information to set the path to the matlab code for the computations if you intend to run the code in a nonstandard directory structure.
 3. Run matlab and set the current directory to the base repo.
-4. Open the file DelayDriver.m. It contains a sequence of chunks of code which illustrate how the interface to the routines works.
-5. Copy the chunks of code identified in DelayDriver.m into the matlab console.
+4. Open the file DelayExperimentsForPaper.m. It contains chunks of code which generates the plots in the paper, and many more related plots.
+ -- If you edit a few parameters in this file, you can change the accuracy of the PDE derivations of optimal stopping boundaries and of other quantities, as well as of Monte Carlo results.
+5. Open the file DelayDriver.m. It contains a sequence of chunks of code which illustrate how the interface to the routines works.
+ -- Copy the chunks of code identified in DelayDriver.m into the matlab console.
 6. Enjoy the plots.
 
 # Comment on simulations

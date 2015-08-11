@@ -30,15 +30,10 @@
 
 tic
 
-doProductionRuns = true
-%doProductionRuns = true
-
 if ~exist('fignum','var'), fignum = 20; end;
 [basic, advanced] = SetStents_sensit();
 [basic, advanced] =  DelayStructureCompute (basic, advanced);
-%basic.PPatients = 100000;     
-%advanced.dirstring = 'Stents';
-%basic.PPatients = 400000;     
+
 advanced.dirstring = 'Stents_sensit_c';
 advanced.graphicextension = 'eps';
 if doProductionRuns

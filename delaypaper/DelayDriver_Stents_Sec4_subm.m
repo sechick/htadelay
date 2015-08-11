@@ -9,20 +9,11 @@
 %%%%%% experimental purposes. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%delaycoredir = 'd:\users\papers\Forster\hta\trunk\delaycore\'
-%delaycoredir = 'c:\martin\chick\hta\trunk\delaycore\' ;
-
-%addpath(genpath(delaycoredir))
-
-%addpath(genpath('..\delaycore\'))
-
-%ORIGIN OF THIS FILE IS FILE "DelayExperimentsForPaper". This is my version
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% STENTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 tic
 if ~exist('fignum','var'), fignum = 20; end;
-[basic, advanced] = SetIllustration_SECTION4_comp();
+[basic, advanced] = SetIllustration_SECTION4();
 advanced.dirstring = 'stents';
 
 advanced.saveplot = true;           % set to true to save plots in files, false to not save files automatically
@@ -43,7 +34,7 @@ advanced.numinsimFreqDeltaVec=400;
 
 graphicsuffix = '';
 PathReps = 10;      % number of replications for generating sample paths for demonstration
-[fignum, mat] = DoSectionFourPlots_comp(fignum, basic,advanced,PathReps,ProductionReps,graphicsuffix);
+[fignum, mat] = DoSectionFourPlots(fignum, basic,advanced,PathReps,ProductionReps,graphicsuffix);
 %fignum = DelaySimSurvival( fignum, basic, advanced, mat ) ;
 minutestocompute = toc/60
 

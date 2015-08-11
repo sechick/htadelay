@@ -289,7 +289,11 @@ if isfield(advanced,'simFreqDeltaVec')
         rval = 0;
     end
 else
-    numinsimFreqDeltaVec=200;  % can change the number of points in freqdeltavec. the 11/3 in the next line is to get \pm 11/3 standard errors in width for vector's range
+    if ~isfield(advanced,'numinsimFreqDeltaVec')
+        numinsimFreqDeltaVec=200;  % can change the number of points in freqdeltavec. the 11/3 in the next line is to get \pm 11/3 standard errors in width for vector's range
+    else
+        numinsimFreqDeltaVec = advanced.numinsimFreqDeltaVec;
+    end
     advanced.simFreqDeltaVec = (basic.sigma/sqrt(basic.t0)) * (11/3) * (-ceil(numinsimFreqDeltaVec/2):ceil(numinsimFreqDeltaVec/2)) / ceil(numinsimFreqDeltaVec/2);
 end
         

@@ -27,73 +27,19 @@ pause off
 % CAN SET FOLLOWING VALUES DEPENDING ON ACCURACY IN PLOTS DESIRED.
 doProductionRuns = true;    % TO BE SET BY END USER: Set to true if lots of replications desired, false if short test is desired.
 doProductionRuns = false;    % TO BE SET BY END USER: Set to true if lots of replications desired, false if short test is desired.
+
 %%%% the following can be customized to increase to to decrease accuracy of
 %%%% both test run mode and production run mode. test run is fast but not
 %%%% accurate, production mode is for generating higher resolution graphs.
-TESTREPS = 100;              % Allow end user to configure number of simulation replications
 PRODUCTIONREPS = 15000;
-TESTNUMPERSTD = 50;          % and fineness of grid for PDE computations
 PRODUCTIONNUMBERSTD = 150;
+
+TESTREPS = 100;              % Allow end user to configure number of simulation replications
+TESTNUMPERSTD = 40;          % and fineness of grid for PDE computations
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 tic
 if ~exist('fignum','var'), fignum = 20; end;
-
-[basic, advanced] = SetIllustration_SECTION4();
-if doProductionRuns
-    ProductionReps = PRODUCTIONREPS;
-    advanced.MinGridPerStdev = PRODUCTIONNUMBERSTD;
-else
-    ProductionReps = TESTREPS;
-    advanced.MinGridPerStdev = TESTNUMPERSTD;
-end
-basic.tau = 1000;
-advanced.saveplot = false;           % set to true to save plots in files, false to not save files automatically
-advanced.DOPLOT= false ;
-%basic.PPatients = 10000;
-advanced.keepAllOutput = true ;
-
-numinsimFreqDeltaVec=280;  % can change the number of points in freqdeltavec. The 11/3 in the next line is to get \pm 11/3 standard errors in width for vector's range
-advanced.simFreqDeltaVec = (basic.sigma/sqrt(basic.t0)) * (11/3) * (-ceil(numinsimFreqDeltaVec/2):ceil(numinsimFreqDeltaVec/2)) / ceil(numinsimFreqDeltaVec/2); % MF 27/03 changed to 15/03 because otherwise the range was too short (did not extend to the optimal `do nothing' values of mu0)
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%% Run graphics for base case
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-graphicsuffix = '';
-PathReps = 10;      % number of replications for generating sample paths for demonstration
-[fignum, mat] = DoSectionFourPlots(fignum, basic,advanced,PathReps,ProductionReps,graphicsuffix);
- 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%% Run graphics for comparator
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-graphicsuffix = '_comp';
-basiccomp = basic;
-basiccomp.tau = 500;
-advancedcomp = advanced;
-PathReps = 10;      % number of replications for generating sample paths for demonstration
-[fignum, matcomp] = DoSectionFourPlots(fignum, basiccomp,advancedcomp,PathReps,ProductionReps,graphicsuffix);
-
-fignum = DoReversalPlot(fignum,basic,advanced,mat,basiccomp,advancedcomp,matcomp,graphicsuffix);
-minutestocompute = toc/60
-
-save sectionfour
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-close all hidden;
-clear;
-LocalDelaySetPaths;
-
-TESTREPS = 100;              % Allow end user to configure number of simulation replications
-PRODUCTIONREPS = 15000;
-TESTNUMPERSTD = 30;          % and fineness of grid for PDE computations
-PRODUCTIONNUMBERSTD = 150;
-
-doProductionRuns = false;    % TO BE SET BY END USER: Set to true if lots of replications desired, false if short test is desired.
-
-pause on
-pause off
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%% Plots for Section 3: Illustration of features of optimal policy

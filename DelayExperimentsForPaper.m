@@ -27,15 +27,17 @@ pause off
 % CAN SET FOLLOWING VALUES DEPENDING ON ACCURACY IN PLOTS DESIRED.
 doProductionRuns = true;    % TO BE SET BY END USER: Set to true if lots of replications desired, false if short test is desired.
 doProductionRuns = false;    % TO BE SET BY END USER: Set to true if lots of replications desired, false if short test is desired.
+doSaveMatFile = false;
 
 %%%% the following can be customized to increase to to decrease accuracy of
 %%%% both test run mode and production run mode. test run is fast but not
 %%%% accurate, production mode is for generating higher resolution graphs.
 PRODUCTIONREPS = 15000;
 PRODUCTIONNUMBERSTD = 150;
+PRODUCTIONNUMBERSTD = 100;
 
 TESTREPS = 100;              % Allow end user to configure number of simulation replications
-TESTNUMPERSTD = 40;          % and fineness of grid for PDE computations
+TESTNUMPERSTD = 30;          % and fineness of grid for PDE computations
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 tic
@@ -45,19 +47,32 @@ if ~exist('fignum','var'), fignum = 20; end;
 %%%%%% Plots for Section 3: Illustration of features of optimal policy
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% RUNTIMES:
+% * On Win 8.1 x64 machine with 2.9Ghz clock, 8Gb RAM:
+%   > when doProductionRuns = false
+%       - First 3 clusters of code take 1.7-2min to compute, each
+%       - cluster for figures 6 and 7 requires 2.7 minutes
+%       - cluster for figure 5 requires 1.9 minutes
+%   > when doProductionRuns = true and PRODUCTIONNUMBERSTD=100
+%       - First cluster of code takes 41 min to compute
+%
 %•	DelayDriver_Stents_Sec4_subm : plots fig 2a and 3
 clear basic; clear advanced; clear mat;
 DelayDriver_Stents_Sec4_subm
 movefile('.\Figure\paths.eps','.\paths.eps')
 movefile('.\Figure\diffs_baseline.eps','.\diffs_baseline.eps')
 movefile('.\Figure\pr_select_best.eps','.\pr_select_best.eps')
-save('StentsFig2a3.mat');
+if doSaveMatFile
+    save('StentsFig2a3.mat');
+end
 
 %•	DelayDriver_Stents_Sec4_comp_subm: plots fig 2b
 clear basic; clear advanced; clear mat;
 DelayDriver_Stents_Sec4_comp_subm
 movefile('.\Figure\paths.eps','.\paths_comp.eps')
-save('StentsFig2b.mat');
+if doSaveMatFile
+    save('StentsFig2b.mat');
+end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%% Plots for Section 4: example for drug eluting stents
@@ -70,7 +85,9 @@ movefile('.\Figure\pathsStents.eps','.\pathsStents.eps')
 movefile('.\Figure\diffsStents.eps','.\diffsStents.eps')
 movefile('.\Figure\E_num_seenStents.eps','.\E_num_seenStents.eps')
 movefile('.\Figure\pr_select_bestStents.eps','.\pr_select_bestStents.eps')
-save('StentsFig4.mat');
+if doSaveMatFile
+    save('StentsFig4.mat');
+end
 
 %•	Drive_stents_sensit_tau: plots fig 6 and 7
 clear basic; clear advanced; clear mat;
@@ -78,12 +95,19 @@ Drive_stents_sensit_tau
 movefile('.\Figure\FigureOptVsOneshot.eps','.\FigureOptVsOneshot.eps')
 movefile('.\Figure\FigureNumStarted.eps','.\FigureNumStarted.eps')
 movefile('.\Figure\FigureDiffValueFunctionRR.eps','.\FigureDiffValueFunctionRR.eps')
-save('StentsFig67.mat');
+movefile('.\Figure\FigureBounds.eps','.\SensitTauFigureBounds.eps')
+movefile('.\Figure\FigureBoundsLessTau.eps','.\SensitTauFigureBoundsLessTau.eps')
+if doSaveMatFile
+    save('StentsFig67.mat');
+end
 
 %•	Drive_stents_sensit_c: plots fig 5
 clear basic; clear advanced; clear mat;
 Drive_stents_sensit_c
 movefile('.\Figure\FigureBounds.eps','.\FigureBounds.eps')
-save('StentsFig5.mat');
+if doSaveMatFile
+    save('StentsFig5.mat');
+end
 
 MISSING SetStents_sensit
+GET FIG 2B TO RUN FASTER

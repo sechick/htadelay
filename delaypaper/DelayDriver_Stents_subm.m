@@ -38,7 +38,8 @@ else
 end
 
 %numinsimFreqDeltaVec=350;  % can change the number of points in freqdeltavec. The 11/3 in the next line is to get \pm 11/3 standard errors in width for vector's range
-advanced.numinsimFreqDeltaVec=400;  % 200 probably enough, or 350 is more than enough
+%advanced.numinsimFreqDeltaVec=400;  % 200 probably enough, or 350 is more than enough
+advanced.numinsimFreqDeltaVec=200;  % 200 probably enough, or 350 is more than enough
 %advanced.simFreqDeltaVec = (basic.sigma/sqrt(basic.t0)) * (11/3) * (-ceil(numinsimFreqDeltaVec/2):ceil(3/2)) / ceil(numinsimFreqDeltaVec/2);  %this is now overwritten within the file "DoSectionFivePlotsStents
 
 graphicsuffix = '';

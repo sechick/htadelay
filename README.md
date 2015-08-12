@@ -1,6 +1,6 @@
 # Sequential Experimentation with Delay
 
-DRAFT IN PROGRESS: CODE BEING MIGRATED NOW FROM ANOTHER REPO.
+ALL RIGHTS RESERVED BY AUTHORS. Code provided as is for noncommercial, academic usage only.
 
 This repository contains Matlab code which implements several contributions from the paper:
 

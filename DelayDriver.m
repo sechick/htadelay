@@ -26,7 +26,6 @@
 %'otherwise it takes long to run, but then the contour plots are '
 %'a bit wiggly. For smoother/better contour plots, set NumPlots '
 %'bigger and set DOPLOT to false'
-%'Also, move plots 4, 5, 6, 7 to different parts of screen if DOPLOT is on'
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -261,7 +260,7 @@ advanced.DOPLOT = 0;
 %basic.tau = 10; 
 advanced.saveplot = true;
 [basic, advanced, rval, msgs] = DelayInputValidator( basic, advanced );
-if ~rval, msgs, end;
+if ~rval, msgs, end; 
 [~, mat] = DelayCurvesRecur(basic, advanced);
 [mat] = DelayStageOne(basic, advanced, mat ); 
 

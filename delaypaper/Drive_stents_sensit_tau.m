@@ -55,7 +55,7 @@ subtitle = 'Vary delay \tau';    % give a short subtitle name for the figures
 fmodifier = fieldname;      % used to diferentiate file name if it is used for saving plots
 [fignum, basicvec, advancedvec, legendvec, matvec] = TestDelayIterate_sensit_tau(fignum,basic,advanced,basicflag,fieldname,fieldvec,subtitle,fmodifier);
 %[fignum] = UtilExperimentVectorPlot( fignum, basicvec, advancedvec, legendvec, matvec, subtitle,fmodifier);
-save('Stents_sensit_tau.mat') ;
+%save('Stents_sensit_tau.mat') ;
 
 MULOW =  advancedvec(1).plot_lower;
 MUHIGH = advancedvec(1).plot_upper;

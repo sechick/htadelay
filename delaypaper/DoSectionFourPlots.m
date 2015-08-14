@@ -103,10 +103,10 @@ if (length(graphicsuffix) == 0) || colorflag
     tmpfontsize = round(advanced.smallfontsize*.9);
     text(  ( basic.t0 + basic.tau/20 ) , mat.muvec(mat.Threshpoint(1)) + (plot_upper-mat.muvec(mat.Threshpoint(1)))/2 , 'No trial', 'Fontsize', tmpfontsize);
     text(  ( basic.t0 + basic.tau/20 ) , plot_lower + (mat.muvec(mat.Threshpoint(2))-plot_lower)/2 , 'No trial', 'Fontsize', tmpfontsize) ;
-    if mat.muvec(mat.Threshpoint(1)) ~= mat.muvec(mat.Threshpoint(3))
+    if abs(mat.Threshpoint(1) - mat.Threshpoint(3)) > 1
         text(  ( basic.t0 + basic.tau/20 ) , (mat.muvec(mat.Threshpoint(1)) + mat.muvec(mat.Threshpoint(3)))/2 , 'Fixed trial', 'Fontsize', tmpfontsize) ;
     end
-    if mat.muvec(mat.Threshpoint(2)) ~= mat.muvec(mat.Threshpoint(4))
+    if abs(mat.Threshpoint(4) - mat.Threshpoint(2)) > 1
         text(  ( basic.t0 + basic.tau/20 ) ,  (mat.muvec(mat.Threshpoint(2)) + mat.muvec(mat.Threshpoint(4)))/2 , 'Fixed trial', 'Fontsize', tmpfontsize) ;
     end
     tmpfontsize = round(advanced.smallfontsize);

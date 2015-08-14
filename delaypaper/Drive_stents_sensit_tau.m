@@ -20,7 +20,7 @@
 tic
 
 if ~exist('fignum','var'), fignum = 20; end;
-[basic, advanced] = SetStents_sensit_tau();
+[basic, advanced] = SetStents_sensit();
 [basic, advanced] =  DelayStructureCompute (basic, advanced);
 
 advanced.dirstring = 'Stents_sensit_tau';

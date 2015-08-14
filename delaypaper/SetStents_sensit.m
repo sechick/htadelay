@@ -1,4 +1,4 @@
-function[ basic, advanced] = SetStents_sensit_tau()
+function[ basic, advanced] = SetStents_sensit()
 % SetSinus_SECTION5 gives an example of setting the input parameters for
 % the delay sequential trials project. This set of parameters are used for
 % the sinusitis application in Section 5 of the paper
@@ -24,7 +24,7 @@ basic.numpairs = 529 ;          % number of pairwise allocations reported by stu
 %basic.mu0=postmean;
 basic.t0 = 20 ;                     % Assumption 
 basic.sigma = 17538 ;               % Derived from Cohen et al. (2004). See also Table 1 of Pertile et al. (2010)
-basic.annualdiscountrate = 0.01 ;         % 
+basic.annualdiscountrate = 0.01 ;         % 0.03 assumed 
 basic.ICost = 0 ;                   % Assumption 
 basic.TMax = 2000 ;              % Assumption 
 basic.c = 200;                  % Assumption
@@ -53,8 +53,8 @@ advanced.nochangeallowed = false;    % set to false (the better default) meaning
 
 %%%%%% Numerical computation parameters %%%%%%
 
-advanced.MinGridPerStdev = 200;    % minimum number of grid points per stdev of output, or negative to use dt=1
-% advanced.MinGridPerStdev = (basic.TMax-basic.t0)/s_step_t;    % if this is negative, code tries to use its negative as the delta-t
+advanced.MinGridPerStdev = 50;    % minimum number of grid points per stdev of output, or negative to use dt=1
+% advanced.MinGridPerStdev = -0.01;    % if this is negative, code tries to use its negative as the delta-t
 % advanced.MinGridPerStdev = 200; 
 
 % For plotting

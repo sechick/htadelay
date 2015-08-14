@@ -33,8 +33,8 @@ doSaveMatFile = false;
 %%%% both test run mode and production run mode. test run is fast but not
 %%%% accurate, production mode is for generating higher resolution graphs.
 PRODUCTIONREPS = 15000;
-PRODUCTIONNUMBERSTD = 150;
-PRODUCTIONNUMBERSTD = 100;
+PRODUCTIONNUMBERSTD = 200;
+PRODUCTIONNUMBERSTD = 120;
 
 TESTREPS = 100;              % Allow end user to configure number of simulation replications
 TESTNUMPERSTD = 30;          % and fineness of grid for PDE computations
@@ -109,5 +109,16 @@ if doSaveMatFile
     save('StentsFig5.mat');
 end
 
-MISSING SetStents_sensit
-GET FIG 2B TO RUN FASTER
+%•	DelayColors: alternative method for producing figures 2 and 3 (illustration)
+% in paper, in color, for example for use in seminar presentations
+clear basic; clear advanced; clear mat;
+doProductionRuns = true;
+DelayColors
+%movefile('.\Figure\FigureBounds.eps','.\FigureBounds.eps')
+movefile('.\Figure\paths_colour.eps','.\paths_colour.eps')
+movefile('.\Figure\paths_comp_colour.eps','.\paths_comp_colour.eps')
+if doSaveMatFile
+    save('DelayAlternative.mat');
+end
+
+

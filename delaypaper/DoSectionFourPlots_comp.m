@@ -117,7 +117,6 @@ xlim( [ 0 3100 ] ); % Comparator
 UtilStdizeFigure_Sec4(fignum,advanced,false);
 UtilSaveFigEpsPdf(fignum,dirname,strcat('paths',graphicsuffix),'-r600');
 
-pause ; 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -231,7 +230,7 @@ hold on ;
 xlim( [ plot_lower, plot_upper] ) ;
 hold on ; 
 xlabel( 'Prior mean', 'Fontsize', advanced.bigfontsize ) ; 
-ylabel( 'Probability of making the correct decision', 'Fontsize', advanced.bigfontsize ) ; 
+ylabel( 'Proportion of correct decisions', 'Fontsize', advanced.bigfontsize ) ; 
 legend( 'Optimal Bayes Sequential',  'Fixed', 'Optimal Bayes One Stage', 'Location', 'north' ) ;
 hold on ; 
 lohivec = [ 0.9, 1 ] ;

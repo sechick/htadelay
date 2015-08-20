@@ -1,7 +1,7 @@
 function [basic, advanced] = SetStents()
 % SETSTENTS gives and example of setting the input parameters for
 % the delay sequential trials project. Makes parameters so that in
-% principal they match the problem structure of the example used in the
+% principle they match the problem structure of the example used in the
 % code developed by Paolo.
 %
 % Designed for Delay Sequential Trials paper of Chick, Forster, Pertile

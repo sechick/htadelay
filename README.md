@@ -36,4 +36,4 @@ The code computes optimal stopping times for sequential experiments when samples
     b. MC results label 'Frequentist' or 'Freq.' means that sample paths were run by fixing all W_i to the value of mu0 on the axis
     The values of mu0 are then varied for both of those types of plots.
     
-    
+last update: 2015 08 21    

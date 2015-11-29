@@ -36,7 +36,7 @@ PRODUCTIONREPS = 15000;
 PRODUCTIONNUMBERSTD = 200;
 PRODUCTIONNUMBERSTD = 120;
 
-TESTREPS = 100;              % Allow end user to configure number of simulation replications
+TESTREPS = 200;              % Allow end user to configure number of simulation replications
 TESTNUMPERSTD = 30;          % and fineness of grid for PDE computations
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

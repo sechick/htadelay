@@ -1,3 +1,4 @@
+
 function[ basic, advanced] = SetStents_WSC()
 % SetSinus_SECTION5 gives an example of setting the input parameters for
 % the delay sequential trials project. This set of parameters are used for
@@ -110,9 +111,6 @@ end
 % Figure 9
 
 %basic.online = true;
-
-
-
 
 
 

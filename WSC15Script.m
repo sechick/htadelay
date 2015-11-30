@@ -1,11 +1,11 @@
 
 LocalDelaySetPaths % Edit a local copy of this MACRO, don't check in on top of installed file.
 
-NUMSIMREPS = 10;
 NUMSIMREPS = 10000;
+NUMSIMREPS = 10;
 
-NUMGRIDCONTOUR = 50;
 NUMGRIDCONTOUR = 120;
+NUMGRIDCONTOUR = 50;
 
 %%%%%%%% TEST KNOWN VERSUS UNKNOWN VARIANCE %%%%%%%%
 if ~exist('fignum','var'), fignum = 20; end;
@@ -127,4 +127,3 @@ else
 end
 
 save WSC15script.mat
-

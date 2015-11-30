@@ -274,12 +274,9 @@ for i=(tlen-1):-1:1
             predtst = (numpeopletreated^2 * sigma^2 * (tau + KGset(j))) / ((curt-tau) * (curt + KGset(j)));    % note: at time curt, the effective number of samples is curt-t0, because tvec starts at time t0, and we have tau samples not yet arrived
             if advanced.UnkVariance
             	posttst = (numpeopletreated^2 * sigma^2) /  (enddof + KGset(j) + tau * (1- advanced.nochangeallowed) );  % posterior variance after all samples arrive which can be seen by time of decision
-            else
-            	posttst = (numpeopletreated^2 * sigma^2) /  (KGset(j) + curt + tau * (1- advanced.nochangeallowed) );  % posterior variance after all samples arrive which can be seen by time of decision
-            end
-            if advanced.UnkVariance
                 OneShotReward = TerminalRewardFunctionUnk(muvec*numpeopletreated - I, theta^KGset(j) * discountfactor^(1- advanced.nochangeallowed), predtst, advanced.nochangeallowed, enddof );  % compute expected regret of a decision, assuming one may have option to continue sampling. This would be the expected value of perfect information, given the information state at the time of stopping, assuming one can continue
             else
+            	posttst = (numpeopletreated^2 * sigma^2) /  (KGset(j) + curt + tau * (1- advanced.nochangeallowed) );  % posterior variance after all samples arrive which can be seen by time of decision
                 OneShotReward = TerminalRewardFunction(muvec*numpeopletreated - I, theta^KGset(j) * discountfactor^(1- advanced.nochangeallowed), predtst,advanced.nochangeallowed );  % compute expected regret of a decision, assuming one may have option to continue sampling. This would be the expected value of perfect information, given the information state at the time of stopping, assuming one can continue
             end
             if theta==1     % put in discounted costs for added samples

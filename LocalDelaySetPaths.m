@@ -30,10 +30,12 @@ function [ rval ] = LocalDelaySetPaths( basepath )
 
     delaycoredir = [ BASEDIR '\delaycore\'];
     delaypaperdir = [ BASEDIR '\delaypaper\'];
+    delayunkdir = [ BASEDIR '\delayunk\'];
     basedelaydir = [BASEDIR];    
 
     addpath(genpath(delaycoredir));
     addpath(genpath(delaypaperdir));
+    addpath(genpath(delayunkdir));
     addpath(basedelaydir);              % set up this way to preclude .git directory structure from being added to path
     
     rval = 1;

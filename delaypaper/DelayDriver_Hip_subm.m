@@ -9,13 +9,9 @@
 %%%%%% experimental purposes. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%delaycoredir = 'd:\users\papers\Forster\hta\trunk\delaycore\'
 %delaycoredir = 'c:\martin\chick\hta\trunk\delaycore\' ;
-
 %addpath(genpath(delaycoredir))
-
 %addpath(genpath('..\delaycore\'))
-
 %ORIGIN OF THIS FILE IS FILE "DelayExperimentsForPaper". This is my version
 
 LocalDelaySetPaths;

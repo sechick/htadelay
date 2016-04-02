@@ -1,10 +1,11 @@
 LocalDelaySetPaths % Edit a local copy of this MACRO, don't check in on top of installed file.
 
-NUMSIMREPS = 10000;
 NUMSIMREPS = 10;
-
-NUMGRIDCONTOUR = 120;
 NUMGRIDCONTOUR = 50;
+
+NUMSIMREPS = 10000;
+NUMGRIDCONTOUR = 120;
+
 
 %%%%%%%% TEST KNOWN VERSUS UNKNOWN VARIANCE %%%%%%%%
 if ~exist('fignum','var'), fignum = 20; end;
@@ -29,8 +30,8 @@ if advanced.verbose % the 'true' part of this keeps the various variables around
 %        advancedvec(i).DOPDE = ~advancedvec(i).UnkVariance; % only do pde of variance is known
         [~, mat] = DelayCurvesRecur(basicvec(i), advancedvec(i));        % Do stage II of DP
         [mat] = DelayStageOne(basicvec(i), advancedvec(i), mat );           % Do stage I of DP
-        [ fignum, mat ] = DelaySimOverview( fignum, basic, advanced, mat );
-%        fignum = DelaySimOutput( fignum, basic, advanced, mat );     % requires DelaySimOverview to have been called
+        [ fignum, mat ] = DelaySimOverview( fignum, basicvec(i), advancedvec(i), mat );
+%        fignum = DelaySimOutput( fignum, basicvec(i), advancedvec(i), mat );     % requires DelaySimOverview to have been called
         if i==1 matvec = mat; else matvec = [matvec mat]; end
     end
     % do the plots based on the structures
@@ -69,8 +70,8 @@ if advanced.verbose % the 'true' part of this keeps the various variables around
     for i=1:veclen
         [~, mat] = DelayCurvesRecur(basicvec(i), advancedvec(i));        % Do stage II of DP
         [mat] = DelayStageOne(basicvec(i), advancedvec(i), mat );           % Do stage I of DP
-        [ fignum, mat ] = DelaySimOverview( fignum, basic, advanced, mat );
-%        fignum = DelaySimOutput( fignum, basic, advanced, mat );     % requires DelaySimOverview to have been called
+        [ fignum, mat ] = DelaySimOverview( fignum, basicvec(i), advancedvec(i), mat );
+%        fignum = DelaySimOutput( fignum, basicvec(i), advancedvec(i), mat );     % requires DelaySimOverview to have been called
         if i==1 matvec = mat; else matvec = [matvec mat]; end
     end
     % do the plots based on the structures
@@ -109,8 +110,8 @@ if advanced.verbose % the 'true' part of this keeps the various variables around
     for i=1:veclen
         [~, mat] = DelayCurvesRecur(basicvec(i), advancedvec(i));        % Do stage II of DP
         [mat] = DelayStageOne(basicvec(i), advancedvec(i), mat );           % Do stage I of DP
-        [ fignum, mat ] = DelaySimOverview( fignum, basic, advanced, mat );
-%        fignum = DelaySimOutput( fignum, basic, advanced, mat );     % requires DelaySimOverview to have been called
+        [ fignum, mat ] = DelaySimOverview( fignum, basicvec(i), advancedvec(i), mat );
+%        fignum = DelaySimOutput( fignum, basicvec(i), advancedvec(i), mat );     % requires DelaySimOverview to have been called
         if i==1 matvec = mat; else matvec = [matvec mat]; end
     end
     % do the plots based on the structures

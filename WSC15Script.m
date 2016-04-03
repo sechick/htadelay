@@ -1,4 +1,3 @@
-
 LocalDelaySetPaths % Edit a local copy of this MACRO, don't check in on top of installed file.
 
 NUMSIMREPS = 10000;
@@ -125,5 +124,12 @@ else
     [fignum, basicvec, advancedvec, legendvec, matvec] = TestDelayIterate(fignum,basic,advanced,basicflag,fieldname,fieldvec,subtitle,fmodifier);
     [fignum] = UtilExperimentVectorPlot( fignum, basicvec, advancedvec, legendvec, matvec, subtitle,fmodifier);
 end
+
+
+filetomove =  'WSCUKvar-ExpVec1UnkVec.pdf';  %strcat(advanced.filestring,'-ExpVec1PDEKGunk.eps');
+copyfile(strcat('.\',advanced.dirstring,'\',filetomove),strcat('.\',filetomove));
+filetomove = 'WSCUvarKGs-ExpVec1KGsUnk.pdf'; %strcat(advanced.filestring,'-UVSimBaUnkVariance490.0.eps');
+copyfile(strcat('.\',advanced.dirstring,'\',filetomove),strcat('.\',filetomove));
+
 
 save WSC15script.mat

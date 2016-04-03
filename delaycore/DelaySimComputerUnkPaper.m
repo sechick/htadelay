@@ -1,4 +1,4 @@
-function [figout, simout] = DelaySimComputer(fignum, basic,advanced,mat,mu0,meanvec,normalnoise)
+function [figout, simout] = DelaySimComputerUnkPaper(fignum, basic,advanced,mat,mu0,meanvec,normalnoise)
 %DelaySimComputer: Given basic, advanced, and mat structures, a prior mean of mu0, 
 % an assumed set of realized mean values in meanvec, and a set of sampling
 % noise in noise, generate a bunch of simulation statistics for the delay
@@ -44,7 +44,6 @@ function [figout, simout] = DelaySimComputer(fignum, basic,advanced,mat,mu0,mean
 %	simout.NoStatsOptSFormMu0 = OptSFormMu0;
 %	simout.NoStatsOpt_fix4 = Opt_fix4;
 %
-
 % 2014 04 27: Created by Steve
 % 2014 08 3: Updated to account for the fact that it might not be optimal
 % to always sample. The code below first assumes that tau samples or more
@@ -77,7 +76,6 @@ if isfield(advanced,'iterateextratext')
     if ~isempty(advanced.iterateextratext)
         ftext = [ftext advanced.iterateextratext];
         subtitle = sprintf('%s %s',ftext,subtitle);
-%        subtitle = sprintf('%s %s',advanced.subtitle,subtitle);
     end
 end
 
@@ -115,34 +113,51 @@ cumobs = [zeros(1,NREPS); cumsum(obs)]; % columns contain cumulative number of s
 %postmean = sampweight .* cumobs + priorweight * basic.mu0 * ones(1,NREPS);      % posterior mean after each observation for each sample path
 postmean = sampweight .* cumobs + priorweight * mu0 * ones(1,NREPS);      % posterior mean after each observation for each sample path
 
-if advanced.PLOTSIMS
-    % plot out some sample paths
-    fignum=fignum+1; figure(fignum); hold off;
-    plot(samppathtvec,postmean(:,1:min(10,NREPS)));
-    hold on
-    %plot(mat.tvec,mat.bndupper,'-.',mat.tvec,mat.bndlower,'-.');    % along with the stopping boundaries
-    plot(bndtvec,newbndupper,'-.',bndtvec,newbndlower,'-.');
-    plot(TimeInfinity-1,meanvec(1:min(10,NREPS)),'o');
-    UtilStdizeFigure( fignum, advanced );
-%    title(sprintf('%s\nSample paths, stopping boundary (-.), mean (o): %s',advanced.titlestring,subtitle),'FontSize',advanced.smallfontsize,'FontName',advanced.fontname);
-    title(sprintf('%s\n%s',advanced.titlestring,subtitle),'FontSize',advanced.smallfontsize,'FontName',advanced.fontname);
-    xlabel('t_0 + num patients started','FontSize',advanced.smallfontsize,'FontName',advanced.fontname); 
-    ylabel('mean reward','FontSize',advanced.smallfontsize,'FontName',advanced.fontname);
-    %axis('square');
-    if advanced.saveplot
-        texttodifferentiate = sprintf('Sim%s%.1f',ftext,mu0);
-        UtilSaveFigFile(fignum, advanced.dirstring, advanced.filestring, texttodifferentiate, advanced.graphicextension);
+% If unknown variance, then set up statistics for inference process for
+% each sample path
+if advanced.UnkVariance % Figure out some parameters which will help with stopping time calculation if variance is unknown
+    if advanced.UnkVarianceShape == -1             % this is the shape parameter for the unknown variance. if -1, then use t0 by default. 
+        baseshape = basic.t0;                      % need to have a proper prior here, and would like to have baseshape > 1 so that moments exist etc
+    else
+        baseshape = advanced.UnkVarianceShape;
     end
+    % statistics for case of unknown variance, assume conjugate normal-gamma
+    % prior, with 
+    %   sigma ~ InvGamma ( xi0, chi0 ), so that E[sigma] = chi0 / (xi0-1) a priori
+    %   mu | sigma ~ Normal ( mu0, sigma^2 / eta0)
+    % here, we prefix the params with hp for hyperparameter, and store xi and
+    % eta as column vectors for each time, the others as matrices with columns
+    % for each replication, and we observe that postmean already holds what
+    % would be pmmu.
+    pmeta = basic.t0 + checkvals;
+    pmxi = baseshape + checkvals/2;
+    %pmmu = postmean;
+    % preallocate posterior value of chi for each alternative and each number
+    % of samples, and initialize the prior value
+    % FIX: Can more stable one-pass or matrix update be implemented?
+    initialchi = basic.sigma^2 * (baseshape-1);      % can try various values here for different mean values of variance a priori
+    pmchi = [ initialchi*ones(1,NREPS); zeros(size(obs))];
+    for i=1:basic.TMax                 % do a naive update on the value of chi iteratively (until a more stable and/or matrix implementation done)
+        pmchi(i+1,:) = pmchi(i,:) + ( (postmean(i,:) - obs(i,:)).^2 * pmeta(i)/(1+pmeta(i)) ) / 2;
+    end  
+    poststdev = sqrt( diag(1./(pmxi-1))*pmchi );    % this is the sqrt of the posterior mean of the variance for each alternative and each 
 end
 
 % get stopping times
 % find first time that sample path goes above and below the two stopping
 % boundaries (or set to large number if did not go above or below. times
 % are shifted by 1 (so, we subtract 1 from times in a later section)
-outtop = (postmean(1:newbndsize,:) > (newbndupper * ones(1,NREPS)));
+if ~advanced.UnkVariance   % for known variance case, can use the boundaries directly
+    outtop = (postmean(1:newbndsize,:) > (newbndupper * ones(1,NREPS)));
+    outbot = (postmean(1:newbndsize,:) < (newbndlower * ones(1,NREPS)));
+else                        % for unknown variance case, need to tweak statistics / stopping rule
+	poststat = postmean(1:newbndsize,:) ./ poststdev(1:newbndsize,:) ;
+    outtop = (poststat(1:newbndsize,:) > ((newbndupper/basic.sigma) * ones(1,NREPS)));
+    outbot = (poststat(1:newbndsize,:) < ((newbndlower/basic.sigma) * ones(1,NREPS)));
+end
+
 [abovetop, timeup] = max(outtop);
 timeup(abovetop==0) = TimeInfinity;
-outbot = (postmean(1:newbndsize,:) < (newbndlower * ones(1,NREPS)));
 [belowbot, timedown] = max(outbot);
 timedown(belowbot==0) = TimeInfinity;
 % Find the first time that at least one of the boundaries is crossed
@@ -151,6 +166,52 @@ outtime = min(outtime,newbndsize)';
 abovetop = (outtime == timeup');     % reset whether went out top or bottom to be time of first of those two... 
 belowbot = (outtime == timedown');   % ... as it might be that the sample path crossed both boundaries
 neverout = ~abovetop & ~belowbot;   % check for possibility that neither was crossed (defensive programming)
+
+if advanced.PLOTSIMS
+    % plot out some sample paths
+    numpathstoplot = min(10,NREPS);
+    fignum=fignum+1; figure(fignum); hold off;
+    plot(samppathtvec,postmean(:,1:numpathstoplot));
+    hold on
+    %plot(mat.tvec,mat.bndupper,'-.',mat.tvec,mat.bndlower,'-.');    % along with the stopping boundaries
+    plot(bndtvec,newbndupper,'-.',bndtvec,newbndlower,'-.');
+    plot(TimeInfinity-1,meanvec(1:numpathstoplot),'o');
+
+    UtilStdizeFigure( fignum, advanced );
+    title(sprintf('%s\n%s',advanced.titlestring,subtitle),'FontSize',advanced.smallfontsize,'FontName',advanced.fontname);
+    xlabel('t_0 + num patients started','FontSize',advanced.smallfontsize,'FontName',advanced.fontname); 
+    ylabel('mean reward','FontSize',advanced.smallfontsize,'FontName',advanced.fontname);
+    %axis('square');
+    if advanced.saveplot
+        texttodifferentiate = sprintf('Sim%s%.1f',ftext,mu0);
+        UtilSaveFigFile(fignum, advanced.dirstring, advanced.filestring, texttodifferentiate, advanced.graphicextension);
+    end
+    
+    % for case of unknown variance, plots are a bit trickier due to need to
+    % rescale the boundaries due to estimation of vairance and plugin for
+    % variance.
+    if advanced.UnkVariance 
+        numpathstoplot = min(6,NREPS);
+        fignum=fignum+1; figure(fignum); hold off;
+        plot(samppathtvec,postmean(:,1:numpathstoplot),'-');
+        hold on
+        %plot(mat.tvec,mat.bndupper,'-.',mat.tvec,mat.bndlower,'-.');    % along with the stopping boundaries
+        plot(bndtvec,newbndupper,'--',bndtvec,newbndlower,'--');
+        plot(TimeInfinity-1,meanvec(1:numpathstoplot),'o');
+        plot(bndtvec,poststat(:,1:numpathstoplot)*basic.sigma,'-.');  % try to scale posterior statistics of sample paths to new plots
+
+        UtilStdizeFigure( fignum, advanced );
+        title(sprintf('%s\n%s (unknown var)',advanced.titlestring,subtitle),'FontSize',advanced.smallfontsize,'FontName',advanced.fontname);
+        xlabel('t_0 + num patients started','FontSize',advanced.smallfontsize,'FontName',advanced.fontname); 
+        ylabel('mean reward','FontSize',advanced.smallfontsize,'FontName',advanced.fontname);
+        %axis('square');
+        if advanced.saveplot
+            texttodifferentiate = sprintf('UVSim%s%.1f',ftext,mu0);
+            UtilSaveFigFile(fignum, advanced.dirstring, advanced.filestring, texttodifferentiate, advanced.graphicextension);
+        end
+    end
+end
+
 
 % Above we have computed the sample paths no matter what the value of mu0
 % is, and have done so for all TMax patient pairs. That in some sense costs

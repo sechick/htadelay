@@ -69,7 +69,22 @@ function [ basic, advanced ] = DelayInputConstructor( basicarray, advancedarray 
     basic.mu0 = 0;          % mean of prior distribution for uknown mean reward
     basic.t0 = 5;           % effective number of samples in prior distribution for unknown mean reward
     basic.sigma = 100;      % standard deviation of sample differences (between people in two trial arms)
+
+    % careful: UnkVariance is true when the unknown variance is to be
+    % sampled prior to each sample path for the trial.
+    % UnkVarBound is true when the unknown variance prior is to be used for
+    % the plugin estimator for the inference process.
+    % these can be set independently. Careful!
     advanced.UnkVariance = false;   % false if variance is known, true if unknown (default to known variance)
+    advanced.UnkVarianceShape = -1.0; % shape parameter for unknown mean for use with plug-in estimator when variance is assumed unknown
+    advanced.UnkVarBound = false;   % false if variance is known, true if unknown (default to known variance), if this is true, use the unknown variance assumption for the inference process for plug in for stopping boundary etc.
+        % Set UnkVarianceShape = -1 to have a 3-parameter conjugate prior
+        %   for the unknown mean and variance, as in Chick and Inoue (Oper Res 2001), eq. (2) and (3)
+        % Set UnkVarianceShape = shape parameter of inverted gamma distribution for
+        %   unknown variance, as in \xi_{i,0} of Chick and Frazier (Man Sci 2012), eq. (20).
+        %   In this case, \chi_{i,0} is set so that basic.sigma =
+        %   \chi_{i,0} / (\xi_{i,0} - 1), meaning that basic.sigma gives the
+        %   a priori mean value of the unknown variance
     advanced.DistributionType = []; % set to empty string unless object used for sampling distribution
     advanced.Distribution = []; % 
 
@@ -94,15 +109,6 @@ function [ basic, advanced ] = DelayInputConstructor( basicarray, advancedarray 
 %    advanced.DistributionType = @DistNormalMuSig; % identify the type of sampling distribution object
 %    advanced.Distribution = advanced.DistributionType(basic.mu0, basic.t0, basic.sigma, xi0); % create an instance of the object with the right hyperparameters
     
-    advanced.UnkVarianceShape = -1.0; % Ignored for the moment. Might later be used for fudge factor for boundary
-        % Set UnkVarianceShape = -1 to have a 3-parameter conjugate prior
-        %   for the unknown mean and variance, as in Chick and Inoue (Oper Res 2001), eq. (2) and (3)
-        % Set UnkVarianceShape = shape parameter of inverted gamma distribution for
-        %   unknown variance, as in \xi_{i,0} of Chick and Frazier (Man Sci 2012), eq. (20).
-        %   In this case, \chi_{i,0} is set so that basic.sigma =
-        %   \chi_{i,0} / (\xi_{i,0} - 1), meaning that basic.sigma gives the
-        %   a priori mean value of the unknown variance
-
     advanced.mushift = 0;
     advanced.NumGridsForContours = 50;  % number of time points to include for time axis in contour plots
     advanced.MinGridPerStdev = 30;    % minimum number of delta-mus per standard deviation

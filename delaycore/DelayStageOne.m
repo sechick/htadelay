@@ -194,8 +194,8 @@ if tau > 0              % IF tau > 0, then we have the opprtunity to have a dela
     % variance (variance is known for diffusion sampled on a continuous
     % interval). Thus, the B0hat is not directly commensurate with the
     % stage I VOI due to the known/unknown variance mismatch.
-    if advanced.UnkVariance
-        bestsvec(bestsvec(:) >= tau) = tau + 1;    % this is the kludge: go to stage II if it appears VOI is increasing at tau samples
+    if advanced.UnkVariance && advanced.DOPDE
+        bestsvec(bestsvec(:) > tau*2/3) = tau + 1;    % this is the kludge: go to stage II if it appears VOI is increasing at tau samples
     else
         bestsvec(beststage1(:) < B0hat(:)) = tau + 1;    
     end

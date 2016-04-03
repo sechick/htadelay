@@ -106,7 +106,11 @@ end
 % computations. It is left here in order to enable further development on
 % the calculations for unknown variance at a later date.
 if advanced.UnkVariance
-    warning('DelayCurvesRecur: PDE approach with unknown variance may underestimate value of stage II sampling');
+    if DOPDE
+        warning('DelayCurvesRecur: PDE approach with unknown variance may underestimate value of stage II sampling');
+    else
+        warning('DelayCurvesRecur: KG* approach to unknown variance may underestimate value of stage II sampling');
+    end
 end
 
 %======= BLOCK 2 ========
@@ -267,7 +271,12 @@ for i=(tlen-1):-1:1
         % FIX: KGset hardcode below could probably be replaced with 2 or 3
         % paramters in the advanced structure, but ...
 %        KGset = unique([0 2.^(0:min(2,max(1,floor(log2(numrepsleft))))/3) numrepsleft]); % check powers of 2 up to number of remaining samples, and all remaining samples
-        KGset = unique([dt 2.^((0:.25:max(1.5,min(100,ceil(log2(numrepsleft))))))]); % check powers of 2 up to number of remaining samples, and all remaining samples
+%        KGset = unique([dt 2.^((-.5:.5:max(1.5,ceil(log2(min(128,numrepsleft))))))]); % check powers of 2 up to number of remaining samples, and all remaining samples
+        if i > 2
+            KGset = unique([dt 2.^((-1:.5:max(1.5,ceil(log2(min(128,numrepsleft))))))]); % check powers of 2 up to number of remaining samples, and all remaining samples
+        else  % if i is small, we are near beginning of time horizon, check a lot more 'look aheads' for this.
+            KGset = unique([dt 2.^((-2:.25:max(1.5,ceil(log2(min(128,numrepsleft))))))]); % check powers of 2 up to number of remaining samples, and all remaining samples
+        end
         for j=1:length(KGset)
             % see what happens if we take an extra KGset(j) samples before
             % stopping to observe the remaining samples
@@ -468,17 +477,17 @@ end
 mat.B0mat = B0mat;          % value function
 mat.Puppermat = Puppermat;  % Probability of stopping due to hitting/exceeding upper boundary
 mat.Pnewmat = Pnewmat;      % Probability that if one stopped at a given (t, mu), that new technology is adopted
-mat.PCSmat = PCSmat;      % Probability that if one stopped at a given (t, mu), that new technology is adopted
+mat.PCSmat = PCSmat;        % Probability that if one stopped at a given (t, mu), that new technology is adopted
 mat.ENumSamps = ENumSampsin;
 mat.Bayespcsvec = pcsout; 
 mat.tmat = tmat;            % should be a row vector, gives time indices for the above matrices for contour plots
 
 mat.muvec = muvec(:);       % should be a column vector of the mu values
 
-mat.tvec = mintvec;            % tvec is for the boundaries: may be different from tmat, as tvec tries to compress
+mat.tvec = mintvec;         % tvec is for the boundaries: may be different from tmat, as tvec tries to compress
 mat.bndupper = bndupper;    % info requirements to get at curves of boundary, whereas tmat is equally spaced, in order
 mat.bndlower = bndlower;    % to help contour plot
-mat.B0vec = Cin;                  % first column of B0mat (might trim this as it is extra unneeded info
+mat.B0vec = Cin;            % first column of B0mat (might trim this as it is extra unneeded info
 
 % Get expected reward with perfect information at time t=Tmax, assuming no discounting
 mat.RewardPITmaxIII = RewardPITmaxIII(:);

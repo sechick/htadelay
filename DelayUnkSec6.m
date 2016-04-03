@@ -85,13 +85,13 @@ end
 
 % Bring graphic files for paper into current directory: Section 6 of JRSSB
 % submission draft, 3 april 2016
-filetomove = strcat(advanced.filestring,'-ExpVec1PDEKGunk.eps');
+filetomove = strcat(advanced.filestring,'_ExpVec1PDEKGunk.eps');
 copyfile(strcat('.\',advanced.dirstring,'\',filetomove),strcat('.\',filetomove));
-filetomove = strcat(advanced.filestring,'-UVSimBaUnkVariance490.0.eps');
+filetomove = strcat(advanced.filestring,'_UVSimBaUnkVariance490.0.eps');
 copyfile(strcat('.\',advanced.dirstring,'\',filetomove),strcat('.\',filetomove));
 %gotta remove the extra . from the file name or latex will glitch out
-filefrom = strcat('.\',advanced.filestring,'-UVSimBaUnkVariance490.0.eps');
-fileto = strcat('.\',advanced.filestring,'-UVSimBaUnkVariance490.eps');
+filefrom = strcat('.\',advanced.filestring,'_UVSimBaUnkVariance490.0.eps');
+fileto = strcat('.\',advanced.filestring,'_UVSimBaUnkVariance490.eps');
 movefile(filefrom,fileto);
 
 

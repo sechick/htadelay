@@ -16,7 +16,7 @@ else
 end
 fullpath = [fullpath filename];
 if ~isempty(modifier)
-    fullpath = [fullpath '-' modifier];
+    fullpath = [fullpath '_' modifier];
 end
 figurepath = [fullpath '.' extension];
 %toggle = ['-d' extension]

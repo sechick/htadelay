@@ -14,9 +14,9 @@ doSaveMatFile = false;
 %%%% both test run mode and production run mode. test run is fast but not
 %%%% accurate, production mode is for generating higher resolution graphs.
 PRODUCTIONREPS = 15000;
-PRODUCTIONREPS = 15;
+PRODUCTIONREPS = 15000;
 PRODUCTIONNUMBERSTD = 200;
-PRODUCTIONNUMBERSTD = 60;
+PRODUCTIONNUMBERSTD = 100;
 
 TESTREPS = 200;              % Allow end user to configure number of simulation replications
 TESTNUMPERSTD = 40;          % and fineness of grid for PDE computations
@@ -56,8 +56,9 @@ if advanced.verbose % the 'true' part of this keeps the various variables around
     [basicvec, advancedvec, legendvec, veclen] = UtilExperimentVectorCreate( basic, advanced, basicflag, fieldname, fieldvec);
     % finish setting up the parameters for the runs
     i=2;        % for second item in vector of experiments
-    advancedvec(i).UnkVariance = true;      % set unknown variance to true - assumes that the t0 and other params had been set already
+    advancedvec(i).UnkVariance = true;      % sample uknown variance prior to each simulated trial - assumes that the t0 and other params had been set already
     advancedvec(i).DOPDE = false;           % do KG* rather than PDE for stopping rule computation    
+    advancedvec(i).UnkVarBound = true;      % use the plug-in estimator for the bounds
     % run the analysis for each of the structures
     for i=1:veclen
         [~, mat] = DelayCurvesRecur(basicvec(i), advancedvec(i));        % Do stage II of DP
@@ -82,4 +83,16 @@ else
     [fignum] = UtilExperimentVectorPlot( fignum, basicvec, advancedvec, legendvec, matvec, subtitle,fmodifier);
 end
 
-save Unk15script.mat
+% Bring graphic files for paper into current directory: Section 6 of JRSSB
+% submission draft, 3 april 2016
+filetomove = strcat(advanced.filestring,'-ExpVec1PDEKGunk.eps');
+copyfile(strcat('.\',advanced.dirstring,'\',filetomove),strcat('.\',filetomove));
+filetomove = strcat(advanced.filestring,'-UVSimBaUnkVariance490.0.eps');
+copyfile(strcat('.\',advanced.dirstring,'\',filetomove),strcat('.\',filetomove));
+%gotta remove the extra . from the file name or latex will glitch out
+filefrom = strcat('.\',advanced.filestring,'-UVSimBaUnkVariance490.0.eps');
+fileto = strcat('.\',advanced.filestring,'-UVSimBaUnkVariance490.eps');
+movefile(filefrom,fileto);
+
+
+save UnkSec6script.mat

@@ -119,7 +119,7 @@ if advanced.UnkVariance % Figure out some parameters which will help with stoppi
     if advanced.UnkVarianceShape == -1             % this is the shape parameter for the unknown variance. if -1, then use t0 by default. 
         baseshape = basic.t0;                      % need to have a proper prior here, and would like to have baseshape > 1 so that moments exist etc
     else
-        baseshape = advanced.UnkVarianceShape - 1;
+        baseshape = advanced.UnkVarianceShape;
     end
     % statistics for case of unknown variance, assume conjugate normal-gamma
     % prior, with 
@@ -135,7 +135,7 @@ if advanced.UnkVariance % Figure out some parameters which will help with stoppi
     % preallocate posterior value of chi for each alternative and each number
     % of samples, and initialize the prior value
     % FIX: Can more stable one-pass or matrix update be implemented?
-    initialchi = basic.sigma^2 * baseshape;      % can try various values here for different mean values of variance a priori
+    initialchi = basic.sigma^2 * (baseshape-1);      % can try various values here for different mean values of variance a priori
     pmchi = [ initialchi*ones(1,NREPS); zeros(size(obs))];
     for i=1:basic.TMax                 % do a naive update on the value of chi iteratively (until a more stable and/or matrix implementation done)
         pmchi(i+1,:) = pmchi(i,:) + ( (postmean(i,:) - obs(i,:)).^2 * pmeta(i)/(1+pmeta(i)) ) / 2;

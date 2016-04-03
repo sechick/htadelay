@@ -75,7 +75,7 @@ end
 if isfield(advanced,'iterateextratext')
     if ~isempty(advanced.iterateextratext)
         ftext = [ftext advanced.iterateextratext];
-        subtitle = sprintf('%s %s',advanced.subtitle,subtitle);
+        subtitle = sprintf('%s %s',ftext,subtitle);
     end
 end
 

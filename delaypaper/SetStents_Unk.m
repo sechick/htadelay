@@ -14,6 +14,8 @@ function[ basic, advanced] = SetStents_Unk()
 % use same parameters as for the stent example with known variance...
 [basic, advanced] = SetStents_SECTION5(); 
 % except for resetting a few parameters ...
+accrualperiod =  7 / 12 ;             
+patientsperyear = basic.numpairs / accrualperiod  ;  % maximum number of patients put into trial per year
 
 % do for undiscounted
 annualdiscountrate = 0.00 ;         % Assumption

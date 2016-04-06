@@ -94,5 +94,13 @@ filefrom = strcat('.\',advanced.filestring,'_UVSimBaUnkVariance490.0.eps');
 fileto = strcat('.\',advanced.filestring,'_UVSimBaUnkVariance490.eps');
 movefile(filefrom,fileto);
 
+% Reversal prob: keep the FIG because the following does not give a good
+% scaling for the figure
+filetomove = strcat(advanced.filestring,'_SimPrReversalN31.eps');
+copyfile(strcat('.\',advanced.dirstring,'\',filetomove),strcat('.\',filetomove));
+filefrom = strcat('.\',advanced.filestring,'_SimPrReversalN31.0.eps');
+fileto = strcat('.\','UnkVarPrReversal.eps');
+movefile(filefrom,fileto);
+
 
 save UnkSec6script.mat

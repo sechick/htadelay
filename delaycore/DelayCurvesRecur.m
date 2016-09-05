@@ -259,8 +259,7 @@ for i=(tlen-1):-1:1
     if DOPDE  % Use free boundary iteration to compute Cintmp, the vector containing value of continuing
         % at present, this code is debugged for the case of known variance.
         % for the case of unknown variance, the results are not computing
-        % well. THus, we have set DOPDE false above so that the KG* naive
-        % one-step look-ahead approximation is used.
+        % as nicely.
         if psame < 0.001
             warning('DelayCurvesRecur: oops, psame smaller than expected');
         end

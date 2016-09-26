@@ -123,18 +123,18 @@ rawboundbot=zeros(size(tvec));     % use this to store the lower 'boundary' of t
 
 dtdmu2ratio = dt / dmu^2;          % ratio which is used frequently
 
-% INITIALIZE TERMINAL CONDITIONS
+%% INITIALIZE TERMINAL CONDITIONS
 discountfactor = (theta^tau);   % amount of discounting from a given time until the data for that time arrives
 i=tlen;
-curt=tvec(i);
+curt=tvec(i); 
 numpeopletreated = P;
 predvarsample = (numpeopletreated^2 * sigma^2 * tau) / ((curt-tau) * curt);    % note: at time curt, the effective number of samples is curt-tau, because tvec starts at time t0+tau, and we have tau samples not yet arrived
 
 if advanced.UnkVariance  % don't define enddof if variance of sampling distribution is known
     if advanced.UnkVarianceShape == -1
-        enddof = curt - tau;         % use if there is a noninformative prior for mu, sigma^2 of sampling distribution
+        enddof = curt - tau;  %P??       % use if there is a noninformative prior for mu, sigma^2 of sampling distribution
     else
-        enddof = curt + 2*advanced.UnkVarianceShape - tau - t0;    % use if the prior is otherwise specified
+        enddof = curt + 2*advanced.UnkVarianceShape - tau - t0; %P??   % use if the prior is otherwise specified
     end
 end
 
@@ -173,6 +173,8 @@ if advanced.DOPLOT
     xlabel('posterior mean');ylabel('Cin');
 end
 
+%% HERE BACKWARD INDUCTION STARTS
+
 %Issue: Difference between accept
 %option to decision in tau time steps or not to allow waiting for tau time
 %steps / versus the stopping boundary issue which says wait for tau time
@@ -182,7 +184,7 @@ end
 %    rawboundbot(i) = muvec(tstindx);     % use this to store the lower 'boundary' of the stopping region, from grid
 %    rawboundtop(i) = muvec(tstindx);     % use this to store the upper 'boundary' of the stopping region, from grid
 %else
-    rawboundbot(i) = I/numpeopletreated;     % use this to store the lower 'boundary' of the stopping region, from grid
+    rawboundbot(i) = I/numpeopletreated;     %
     rawboundtop(i) = I/numpeopletreated;     % use this to store the upper 'boundary' of the stopping region, from grid
 %end
 
@@ -225,15 +227,25 @@ for i=(tlen-1):-1:1
         end
         fudgefactor = sqrt( enddof / (enddof - 2) );
         postvar = (numpeopletreated^2 * sigma^2) /  (enddof + tau * (1- advanced.nochangeallowed) );  % posterior variance after all samples arrive which can be seen by time of decision
+        
+        % unknown
     else
         fudgefactor = 1.0;
         postvar = (numpeopletreated^2 * sigma^2) /  (curt + tau * (1- advanced.nochangeallowed) );  % posterior variance after all samples arrive which can be seen by time of decision
     end
+   
     
     % This 'RegretPenalty' code, if changed, needs to be changed in several
     % places: one place in DelayStageOne, two places in DelayCurvesRecur
     if advanced.UnkVariance  % don't define enddof if variance of sampling distribution is known
+        
+        %P WHAT FOLLOWS IS THE FUNDAMENTAL STEP HERE
         stoprewardvec = TerminalRewardFunctionUnk(muvec*numpeopletreated-I,discountfactor,predvarsample,advanced.nochangeallowed,enddof);
+        %stoprewardvec = TerminalRewardFunction(muvec*numpeopletreated-I,discountfactor,predvarsample,advanced.nochangeallowed);
+        
+        
+        
+        
         [Rewardmax, pcsstopnow] = TerminalRegretUnk(muvec*numpeopletreated - I, discountfactor^(1- advanced.nochangeallowed), ...
                 predvarsample, postvar, advanced, enddof );  % compute expected regret of a decision, assuming one may have option to continue sampling. This would be the expected value of perfect information, given the information state at the time of stopping, assuming one can continue
         if abs(advanced.RegretPenalty) ~= 0
@@ -259,7 +271,8 @@ for i=(tlen-1):-1:1
     if DOPDE  % Use free boundary iteration to compute Cintmp, the vector containing value of continuing
         % at present, this code is debugged for the case of known variance.
         % for the case of unknown variance, the results are not computing
-        % as nicely.
+        % well. THus, we have set DOPDE false above so that the KG* naive
+        % one-step look-ahead approximation is used.
         if psame < 0.001
             warning('DelayCurvesRecur: oops, psame smaller than expected');
         end
@@ -272,16 +285,17 @@ for i=(tlen-1):-1:1
 %        KGset = unique([0 2.^(0:min(2,max(1,floor(log2(numrepsleft))))/3) numrepsleft]); % check powers of 2 up to number of remaining samples, and all remaining samples
 %        KGset = unique([dt 2.^((-.5:.5:max(1.5,ceil(log2(min(128,numrepsleft))))))]); % check powers of 2 up to number of remaining samples, and all remaining samples
         if i > 2
-            KGset = unique([dt 2.^((-1:.5:max(1.5,ceil(log2(min(128,numrepsleft))))))]); % check powers of 2 up to number of remaining samples, and all remaining samples
+            KGset = unique([dt 2.^((-1:.25:max(1.5,ceil(log2(min(1024,numrepsleft))))))]);
         else  % if i is small, we are near beginning of time horizon, check a lot more 'look aheads' for this.
-            KGset = unique([dt 2.^((-2:.25:max(1.5,ceil(log2(min(128,numrepsleft))))))]); % check powers of 2 up to number of remaining samples, and all remaining samples
+            KGset = unique([dt 2.^((-1:.125:max(1.5,ceil(log2(min(1024,numrepsleft))))))]);
         end
+        
         for j=1:length(KGset)
             % see what happens if we take an extra KGset(j) samples before
             % stopping to observe the remaining samples
             predtst = (numpeopletreated^2 * sigma^2 * (tau + KGset(j))) / ((curt-tau) * (curt + KGset(j)));    % note: at time curt, the effective number of samples is curt-t0, because tvec starts at time t0, and we have tau samples not yet arrived
             if advanced.UnkVariance
-            	posttst = (numpeopletreated^2 * sigma^2) /  (enddof + KGset(j) + tau * (1- advanced.nochangeallowed) );  % posterior variance after all samples arrive which can be seen by time of decision
+            	posttst = (numpeopletreated^2 * sigma^2) / (enddof + KGset(j) + tau * (1- advanced.nochangeallowed) );  % posterior variance after all samples arrive which can be seen by time of decision
                 OneShotReward = TerminalRewardFunctionUnk(muvec*numpeopletreated - I, theta^KGset(j) * discountfactor^(1- advanced.nochangeallowed), predtst, advanced.nochangeallowed, enddof );  % compute expected regret of a decision, assuming one may have option to continue sampling. This would be the expected value of perfect information, given the information state at the time of stopping, assuming one can continue
             else
             	posttst = (numpeopletreated^2 * sigma^2) /  (KGset(j) + curt + tau * (1- advanced.nochangeallowed) );  % posterior variance after all samples arrive which can be seen by time of decision
@@ -302,6 +316,7 @@ for i=(tlen-1):-1:1
     Cintmp(musize)=stoprewardvec(musize);   % now, the discounting and sampling cost might given incorrect values for the extremes of mu,
     Cintmp(1)=stoprewardvec(1);             % so we again must reset their values to indure that we remain in the stopping set
 
+     
     %find stopping boundary
     Cout = max(Cintmp,stoprewardvec);          % implement maximizer for bellman equation
     stopped = ( Cintmp <= stoprewardvec );     % stopped(i) is true if it is optimal to stop when mean is muvec(i)

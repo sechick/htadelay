@@ -21,9 +21,20 @@
 
 tic
 
+clear;
+close all;
+
+
 if ~exist('fignum','var'), fignum = 20; end;
 [basic, advanced] = SetStents_sensit();
 [basic, advanced] =  DelayStructureCompute (basic, advanced);
+
+
+PRODUCTIONREPS = 15000;
+TESTREPS = 500;
+PRODUCTIONNUMBERSTD = 200;
+TESTNUMPERSTD = 20;
+doProductionRuns = false;
 
 advanced.dirstring = 'Stents_sensit_c';
 advanced.graphicextension = 'eps';

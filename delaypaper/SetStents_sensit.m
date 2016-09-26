@@ -64,6 +64,7 @@ advanced.NumGridsForContours = 100; % number of time values for generating conto
 advanced.bigfontsize=16;
 advanced.smallfontsize=14;
 advanced.fontname='Helvetica';
+advanced.smallfontsize=14;
 
 %advanced.titlestring='Stent Example from Paolo';
 advanced.titlestring='Drug Eluting Stents versus Bare Metal Stents';

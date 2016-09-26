@@ -216,7 +216,12 @@ for i=1:veclen
         scatter (matvec(i).bestsvec(matvec(i).Threshpoint(3):matvec(i).Threshpoint(1)) + basic.t0, matvec(i).muvec(matvec(i).Threshpoint(3):matvec(i).Threshpoint(1)),strcat(mycode2{1+mod(i-1,length(mycode))},mycolor{1+mod(i-1,length(mycolor))} ));
         hold on ;
     end
+    
 end
+
+tmpfontsize = round(advanced.smallfontsize * 1.1);
+text(  basic.t0 + basic.TMax - 180,  tmp(1)+650  , 'n_0 + T_{max}', 'Fontsize', tmpfontsize) ;
+text(  basic.t0 + basic.tau + 2.5,   tmp(1)+650 , 'n_0 + \tau', 'Fontsize', tmpfontsize) ;
 
 i=1;
 %    UtilResizeFigureToBounds(mat);
@@ -228,7 +233,7 @@ plotmaxreps=tmp(2);
 axis(tmp);
 UtilStdizeFigure(fignum,advancedvec(i));set(gca,'fontsize',advancedvec(i).bigfontsize);
 %title(sprintf('%s\nSequential Bayes, stage II boundaries, %s',advancedvec(i).titlestring,subtitle),'FontSize',advancedvec(i).bigfontsize,'FontName',advancedvec(i).fontname);
-ylabel('posterior mean','FontSize',advancedvec(i).bigfontsize,'FontName',advancedvec(i).fontname);
+ylabel('Prior / Posterior Mean','FontSize',advancedvec(i).bigfontsize,'FontName',advancedvec(i).fontname);
 xlabel('n_0 + t','FontSize',advancedvec(i).bigfontsize,'FontName',advancedvec(i).fontname); 
 if advancedvec(i).saveplot
     texttodifferentiate = 'Bounds';
@@ -258,7 +263,7 @@ plotmaxreps=tmp(2);
 axis(tmp);
 UtilStdizeFigure(fignum,advancedvec(i));set(gca,'fontsize',advancedvec(i).bigfontsize);
 title(sprintf('%s\nSequential Bayes, stage II boundaries, %s',advancedvec(i).titlestring,subtitle),'FontSize',advancedvec(i).bigfontsize,'FontName',advancedvec(i).fontname);
-ylabel('posterior mean','FontSize',advancedvec(i).bigfontsize,'FontName',advancedvec(i).fontname);
+ylabel('Prior / Posterior Mean','FontSize',advancedvec(i).bigfontsize,'FontName',advancedvec(i).fontname);
 xlabel('n_0 + number of patients SEEN','FontSize',advancedvec(i).bigfontsize,'FontName',advancedvec(i).fontname); 
 if advancedvec(i).saveplot
     texttodifferentiate = 'BoundsLessTau';

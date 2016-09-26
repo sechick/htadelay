@@ -12,12 +12,7 @@ advanced.PLOTSIMS = false ;
 
 [~, mat] = DelayCurvesRecur(basic, advanced);
 [mat] = DelayStageOne(basic, advanced, mat ); 
-toneshot = (0:basic.TMax);
-%THE CODE SEEMS TO WORK UP TO THIS POINT; FOR SOME REASONS, I GET AN ERROR
-%AT THE FOLLOWING LINE
-%[mat]  = DelayOptimalBayesOneStage (basic, advanced, toneshot, mat ); % this function that Steve wrote defines the optimal fixed sample size based on a comparison of EVSI and sampling costs
 
-%%%%%%%
 
 %% Plotting the optimal stopping rule
 fignum = fignum + 1; figure(fignum); % always increment fignum and create a new figure
@@ -88,7 +83,7 @@ UtilSaveFigEpsPdf(fignum,dirname,strcat('pathsStents',graphicsuffix),'-r600');
 %print -r600 -deps paths ; 
 %print -r600 -dpdf paths ; 
 
-%%%%% PROVA
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% For Other figures, use estimates based on a lot of sample
@@ -100,8 +95,8 @@ advanced.simNumReps = ProductionReps;  % set to specific number of replications 
 %advanced.simFreqDeltaVec = (plot_lower:(plot_upper-plot_lower)/advanced.numinsimFreqDeltaVec:plot_upper);% P : EXPERIMENT
 
 advanced.numinsimFreqDeltaVec=300;  % can change the number of points in freqdeltavec. the 11/3 in the next line is to get \pm 11/3 standard errors in width for vector's range
-advanced.simFreqDeltaVec = (basic.sigma/sqrt(basic.t0)) * (11/3) * (-ceil(advanced.numinsimFreqDeltaVec/2):ceil(advanced.numinsimFreqDeltaVec/2)) / ceil(advanced.numinsimFreqDeltaVec/2);
-%P: DUPLICATION??
+%advanced.simFreqDeltaVec = (basic.sigma/sqrt(basic.t0)) * (11/3) * (-ceil(advanced.numinsimFreqDeltaVec/2):ceil(advanced.numinsimFreqDeltaVec/2)) / ceil(advanced.numinsimFreqDeltaVec/2);
+advanced.simFreqDeltaVec = (plot_lower:(plot_upper-plot_lower)/advanced.numinsimFreqDeltaVec:plot_upper);% P : EXPERIMENT
 
 [ fignum, mat ] = DelaySimOverview( fignum, basic, advanced, mat ) ;
 fignum = DelaySimOutput( fignum, basic, advanced, mat );  
@@ -134,7 +129,7 @@ xlim( [ plot_lower, plot_upper] ) ;
 ylim( [ -75000000/10 , 75000000 ] ) ;  
 xlabel( 'Prior mean', 'Fontsize', advanced.bigfontsize ) ; 
 ylabel( 'Difference between expected rewards', 'Fontsize', advanced.bigfontsize) ; 
-legend( 'Optimal Bayes One Stage', 'Fixed (= trial sample size)', 'Location', 'northeast' ) ; 
+legend( 'Optimal Bayes One Stage', 'Fixed (= trial sample size)', 'Location', 'northwest' ) ; 
 hold on ; 
 plot( advanced.simFreqDeltaVec, diff_zero, ':k','LineWidth',linewid ) ; 
 % MF 08/03: Steve's code for SEs: these correctly compute SE estimate when

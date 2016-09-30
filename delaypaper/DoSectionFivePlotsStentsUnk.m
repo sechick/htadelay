@@ -21,7 +21,7 @@ hold off ;
 %legend( 'Actual Stage II (observing and sampling)', 'Actual Stage III (observing only)','Location','South') ; 
 %hold on ; 
 % plot Stage 1 boundary if there exists a Stage 1
-plot (mat.tvec, mat.bndupper,'--k',mat.tvec ,mat.bndlower, '--k' ,'LineWidth',linewid );
+plot (mat.tvec, mat.bndupper,'--k',mat.tvec ,mat.bndlower, '--k' ,'LineWidth',linewid);
 hold on ; 
 if abs( mat.Threshpoint(2) - mat.Threshpoint(4) ) > 1
     scatter (mat.bestsvec(mat.Threshpoint(2):mat.Threshpoint(4)) + basic.t0, mat.muvec(mat.Threshpoint(2):mat.Threshpoint(4)),'k');
@@ -45,6 +45,9 @@ xlim( [ 0, 2500] ) ;
 line( [ basic.t0 + basic.tau, basic.t0 + basic.tau ], [ plot_lower_tmp, plot_upper_tmp ], 'Linestyle', ':', 'Color', 'k' ) ;
 line( [ basic.t0 + basic.TMax, basic.t0 + basic.TMax ], [ plot_lower_tmp, plot_upper_tmp ], 'Linestyle', ':', 'Color', 'k' ) ;
 line( [ basic.t0, basic.t0 ], [ plot_lower_tmp, plot_upper_tmp ], 'Linestyle', ':', 'Color', 'k' ) ;
+if advanced.DOPDE
+    line( [basic.t0 + basic.tau, basic.t0 + basic.tau ], [ mat.muvec(mat.Threshpoint(4)),mat.bndlower(1) ], 'Linestyle', '--', 'Color', 'k', 'LineWidth',linewid*1.1) ;
+end
 %line( [ basic.t0 + basic.tau + basic.TMax, basic.t0 + basic.tau + basic.TMax ], [ plot_lower_tmp, plot_upper_tmp ], 'Linestyle', ':', 'Color', 'k' ) ;
 tmpfontsize = round(advanced.smallfontsize * 1.1);
 text(  basic.t0 + 2.5,  plot_lower_tmp + 650, 'n_0', 'Fontsize', tmpfontsize) ;
@@ -82,7 +85,6 @@ UtilSaveFigEpsPdf(fignum,dirname,strcat('pathsStents',graphicsuffix),'-r600');
 %savefig paths ; 
 %print -r600 -deps paths ; 
 %print -r600 -dpdf paths ; 
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

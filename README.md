@@ -6,7 +6,7 @@ This repository contains Matlab code which implements several contributions from
 
 'A Bayesian Decision-Theoretic Model of Sequential Experimentation with Delayed Response'
 
-by Stephen E. Chick, Martin Forster, and Paolo Pertile (2015, in submission), preprint available at https://ideas.repec.org/p/yor/yorken/15-09.html.
+by Stephen E. Chick, Martin Forster, and Paolo Pertile (accepted to appear in JRSS B, online since 2017 at https://dx.doi.org/10.1111/rssb.12225), with preprint of earlier draft available at https://ideas.repec.org/p/yor/yorken/15-09.html.
 
 The code computes optimal stopping times for sequential experiments when samples are observed with delay. The code includes:
 

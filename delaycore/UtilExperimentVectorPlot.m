@@ -41,7 +41,7 @@ for i=1:veclen
     hold on
 end
 if length(legendvec) > 1 
-    legend(legendvec,'Location','SouthEast'); 
+    legend(legendvec,'Location','SouthEast','AutoUpdate','Off'); 
 end;
 for i=1:veclen
     plot(matvec(i).tvec,matvec(i).bndlower,mycode{1+mod(i-1,length(mycode))});
@@ -77,7 +77,7 @@ for i=1:veclen
     hold on
 end
 if length(legendvec) > 1 
-    legend(legendvec,'Location','SouthEast'); 
+    legend(legendvec,'Location','SouthEast','AutoUpdate','Off'); 
 end;
 for i=1:veclen
     plot(matvec(i).tvec-basicvec(i).tau,matvec(i).bndlower,mycode{1+mod(i-1,length(mycode))});
@@ -108,7 +108,7 @@ title(sprintf('%s\n%s',advancedvec(i).titlestring,subtitle),'FontSize',advancedv
 xlabel('t_0 + number of patients started','FontSize',advancedvec(i).smallfontsize,'FontName',advancedvec(i).fontname);
 ylabel('optimal num samples, stage I','FontSize',advancedvec(i).smallfontsize,'FontName',advancedvec(i).fontname);
 if length(legendvec) > 1 
-    legend(legendvec,'Location','SouthEast'); 
+    legend(legendvec,'Location','SouthEast','AutoUpdate','Off'); 
 end;
 UtilStdizeFigure(fignum,advancedvec(i));
 if advancedvec(i).saveplot
@@ -124,7 +124,7 @@ for i=1:veclen
     hold on;
 end
 if length(legendvec) > 1 
-    legend(legendvec,'Location','SouthEast'); 
+    legend(legendvec,'Location','SouthEast','AutoUpdate','Off'); 
 end;
 for i=1:veclen
     plot(matvec(i).muvec,basicvec(i).TMax,mycode2{1+mod(i-1,length(mycode2))},[min(matvec(i).bndlower) max(matvec(i).bndupper)],[basicvec(i).tau basicvec(i).tau],mycode2{1+mod(i-1,length(mycode2))});
@@ -149,7 +149,7 @@ for i=1:veclen
     hold on;
 end
 if length(legendvec) > 1 
-    legend(legendvec,'Location','SouthEast'); 
+    legend(legendvec,'Location','SouthEast','AutoUpdate','Off'); 
 end;
 i=1;
 %    UtilResizeFigureToBounds(mat);
@@ -171,7 +171,7 @@ for i=1:veclen
     hold on;
 end
 if length(legendvec) > 1 
-    legend(legendvec,'Location','SouthEast'); 
+    legend(legendvec,'Location','SouthEast','AutoUpdate','Off'); 
 end;
 i=1;
 %    UtilResizeFigureToBounds(mat);
@@ -192,7 +192,7 @@ for i=1:veclen
     hold on;
 end
 if length(legendvec) > 1 
-    legend(legendvec,'Location','SouthEast'); 
+    legend(legendvec,'Location','SouthEast','AutoUpdate','Off'); 
 end;
 for i=1:veclen
     plot(matvec(i).muvec,matvec(i).OneshotPCS,mycode2{1+mod(i-1,length(mycode2))},[min(matvec(i).bndlower) max(matvec(i).bndupper)],[0.0 0.0],mycode2{1+mod(i-1,length(mycode2))});
@@ -216,7 +216,7 @@ for i=1:veclen
     hold on;
 end
 if length(legendvec) > 1 
-    legend(legendvec,'Location','SouthEast'); 
+    legend(legendvec,'Location','SouthEast','AutoUpdate','Off'); 
 end;
 for i=1:veclen
     plot([min(matvec(i).bndlower) max(matvec(i).bndupper)],[0.0 0.0],mycode2{1+mod(i-1,length(mycode2))});
@@ -240,7 +240,7 @@ for i=1:veclen
     hold on;
 end
 if length(legendvec) > 1 
-    legend(legendvec,'Location','SouthEast'); 
+    legend(legendvec,'Location','SouthEast','AutoUpdate','Off'); 
 end;
 for i=1:veclen
     plot([min(matvec(i).bndlower) max(matvec(i).bndupper)],[0.0 0.0],mycode2{1+mod(i-1,length(mycode2))});
@@ -270,7 +270,7 @@ for i=1:numel(fields)
             hold on
         end
         if length(legendvec) > 1 
-            legend(legendvec,'Location','SouthEast'); 
+            legend(legendvec,'Location','SouthEast','AutoUpdate','Off'); 
         end;
         for j=1:veclen
             avevec = matvec(j).outBayes.(fields{i});

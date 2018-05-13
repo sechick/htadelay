@@ -71,9 +71,9 @@ if basic.PPatients <= 0
     rval = 0;
 end
 if basic.ICost < 0
-    basic.ICost = defaultbasic.ICost;  % fixed cost if adoption of new technology is made
-    errorlist = sprintf('%s\n%s: invalid fixed cost ICost, ICost reset to %f\n',errorlist,routinename,basic.ICost);
-    rval = 0;
+%    basic.ICost = defaultbasic.ICost;  % fixed cost if adoption of new technology is made
+    errorlist = sprintf('%s\n%s: normally ICost is not negative - tread with care\n',errorlist,routinename);
+    rval = 1;
 end
 if basic.tau < 0
     basic.tau = defaultbasic.tau;  % delay (in number of patients treated) until data is observed

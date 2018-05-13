@@ -66,6 +66,8 @@ if doSaveMatFile
     save('StentsFig2a3.mat');
 end
 
+pause; close all hidden;
+
 %•	DelayDriver_Stents_Sec4_comp_subm: plots fig 2b
 clear basic; clear advanced; clear mat;
 DelayDriver_Stents_Sec4_comp_subm
@@ -74,9 +76,13 @@ if doSaveMatFile
     save('StentsFig2b.mat');
 end
 
+pause; close all hidden;
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%% Plots for Section 4: example for drug eluting stents
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+pause; close all hidden;
 
 %•	 DelayDriver_Stents_subm: plots fig 4
 clear basic; clear advanced; clear mat;
@@ -88,6 +94,8 @@ movefile('.\Figure\pr_select_bestStents.eps','.\pr_select_bestStents.eps')
 if doSaveMatFile
     save('StentsFig4.mat');
 end
+
+pause; close all hidden;
 
 %•	Drive_stents_sensit_tau: plots fig 6 and 7
 clear basic; clear advanced; clear mat;
@@ -101,6 +109,8 @@ if doSaveMatFile
     save('StentsFig67.mat');
 end
 
+pause; close all hidden;
+
 %•	Drive_stents_sensit_c: plots fig 5
 clear basic; clear advanced; clear mat;
 Drive_stents_sensit_c
@@ -108,6 +118,8 @@ movefile('.\Figure\FigureBounds.eps','.\FigureBounds.eps')
 if doSaveMatFile
     save('StentsFig5.mat');
 end
+
+pause; close all hidden;
 
 %•	DelayColors: alternative method for producing figures 2 and 3 (illustration)
 % in paper, in color, for example for use in seminar presentations

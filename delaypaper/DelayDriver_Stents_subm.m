@@ -16,7 +16,7 @@
 
 %addpath(genpath('..\delaycore\'))
 
-%ORIGIN OF THIS FILE IS FILE "DelayExperimentsForPaper". This is my version
+%ORIGIN OF THIS FILE IS FILE "DelayExperimentsForPaper". 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% STENTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

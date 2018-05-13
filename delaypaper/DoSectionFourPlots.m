@@ -73,8 +73,8 @@ end
 plot( paths( 1:outtime6, 1 )', paths( 1 : outtime6, 7 )', 'k' ,'LineWidth',linewid ) ;
 hold on ; 
 plot( paths( outtime6 + 1:decidetime6, 1 )', paths( outtime6 + 1:decidetime6, 7 )', code2 ,'LineWidth',linewid ) ;
-%rect=[1200,-5000,100,100];
-lgd=legend( 'Actual Stage II (observing and sampling)', 'Actual Stage III (observing only)','Position',[220,55,10,10], 'Fontsize', tmpfontsize) ; 
+%rect=[1200,-5000,100,100]; %'Position',[220,55,10,10],, 'Fontsize', tmpfontsize
+lgd=legend( 'Actual Stage II (observing and sampling)', 'Actual Stage III (observing only)', 'AutoUpdate', 'Off' ) ; 
 plot( paths( 1:outtime3, 1 )', paths( 1 : outtime3, 4 )', 'k', paths( outtime3 + 1:decidetime3, 1 )', paths( outtime3 + 1:decidetime3, 4 )', code2 ,'LineWidth',linewid); 
 plot( paths( 1:outtime7, 1 )', paths( 1 : outtime7, 8 )', 'k', paths( outtime7 + 1:decidetime7, 1 )', paths( outtime7 + 1:decidetime7, 8 )', code2  ,'LineWidth',linewid); 
 plot( paths( 1:outtime10, 1 )', paths( 1 : outtime10, 11 )', 'k', paths( outtime10 + 1:decidetime10, 1 )', paths( outtime10 + 1:decidetime10, 11 )', code2 ,'LineWidth',linewid); 
@@ -172,7 +172,7 @@ if ~colorflag % only do other figures if color plot is not needed
     ylim( [ -200000, 1000000 ] ) ; % Comparator
     xlabel( 'Prior mean', 'Fontsize', advanced.bigfontsize ) ; 
     ylabel( 'Difference between expected rewards', 'Fontsize', advanced.bigfontsize) ; 
-    legend( 'Optimal Bayes One Stage', 'Fixed', 'Location', 'north' ) ; 
+    legend( 'Optimal Bayes One Stage', 'Fixed', 'Location', 'north','AutoUpdate', 'Off' ) ; 
     hold on ; 
     % MF 08/03: Steve's code for SEs: these correctly compute SE estimate when
     % output is run with CRN across experiments.
@@ -243,13 +243,11 @@ if ~colorflag % only do other figures if color plot is not needed
     ist0 = false ;
     %fignum = fignum + 1; figure(fignum);
     plot(advanced.simFreqDeltaVec, mat.outBayes.PrTrueBestSelectedAve, '--k', advanced.simFreqDeltaVec, mat.outBayes.PrTrueBestSelectedAllAve, '-.k', advanced.simFreqDeltaVec, mat.outBayes.PrTrueBestSelectedFixedAve, '-k' ,'LineWidth',linewid ); 
-    hold on ; 
-    xlim( [ plot_lower, plot_upper] ) ;
-    hold on ; 
-    xlabel( 'Prior mean', 'Fontsize', advanced.bigfontsize ) ; 
+   hold on ; 
+     xlabel( 'Prior mean', 'Fontsize', advanced.bigfontsize ) ; 
     ylabel( 'Proportion of correct decisions', 'Fontsize', advanced.bigfontsize ) ; 
-    legend( 'Optimal Bayes Sequential',  'Fixed', 'Optimal Bayes One Stage', 'Location', 'north' ) ;
-    hold on ; 
+    legend( 'Optimal Bayes Sequential',  'Fixed', 'Optimal Bayes One Stage', 'Location', 'north','AutoUpdate', 'Off' ) ;
+    xlim( [ plot_lower, plot_upper] ) ;
     lohivec = [ 0.9, 1 ] ;
     UtilPlotABCD( basic, advanced, mat, ishoriz, ist0, lohivec ); 
     UtilStdizeFigure(fignum,advanced);
@@ -268,14 +266,13 @@ if ~colorflag % only do other figures if color plot is not needed
     ENumSeenAve = mat.outBayes.ENumSeenAve ; 
     TMax = ones( 1, length( advanced.simFreqDeltaVec ) ) * basic.TMax ; 
     %plot(  advanced.simFreqDeltaVec, ENumSeenAve', '--k', advanced.simFreqDeltaVec, TMax, '-.k', advanced.simFreqDeltaVec, Opt_Fixed, 'k' ) ;  
-    plot(  advanced.simFreqDeltaVec, ENumSeenAve', '--k', advanced.simFreqDeltaVec, TMax, '-.k', mat.muvec,mat.OptOneShotLength, 'k' ,'LineWidth',linewid ) ;  
-    ylim( [ 0, 2100 ] ) ; 
-    xlim( [ plot_lower,plot_upper] ) ;
-    hold on ; 
+    plot(  advanced.simFreqDeltaVec, ENumSeenAve', '--k', advanced.simFreqDeltaVec, TMax, '-.k',  mat.muvec,mat.OptOneShotLength, 'k' ,'LineWidth',linewid ) ;  
     xlabel( 'Prior mean', 'Fontsize', advanced.bigfontsize ) ; 
     ylabel( 'Expected number of samples' , 'Fontsize', advanced.bigfontsize) ; 
-    legend( 'Optimal Bayes Sequential',  'Fixed', 'Optimal Bayes One Stage', 'Location', 'north' ) ;
+    legend( 'Optimal Bayes Sequential',  'Fixed', 'Optimal Bayes One Stage', 'Location', 'north','AutoUpdate', 'Off' ) ;
     hold on ; 
+    ylim( [ 0, 2100 ] ) ; 
+    xlim( [ plot_lower,plot_upper] ) ;
     lohivec = [ 0, 2100 ] ;
     UtilPlotABCD( basic, advanced, mat, ishoriz, ist0, lohivec ); 
     hold on ; 

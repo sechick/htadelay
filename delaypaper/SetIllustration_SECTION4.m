@@ -71,8 +71,8 @@ advanced.bigfontsize=16;
 advanced.smallfontsize=14;
 advanced.fontname='Helvetica';
 
-%advanced.titlestring='Stent Example from Paolo';
-advanced.titlestring='Probability of Correctly Selecting Best Alternative (PCS)';
+advanced.titlestring='Stent Example';
+%advanced.titlestring='Probability of Correctly Selecting Best Alternative (PCS)';
 advanced.filestring='illustration';
 advanced.dirstring='illustration';
 

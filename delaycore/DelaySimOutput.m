@@ -111,7 +111,8 @@ else
                 end %PDEwithSimPlots
 
                 % plot the legend
-                legend(legendvec,'Location','NorthWest');
+%                legend(legendvec,'Location','NorthWest');  % use this command for versions prior to Matlab R2017a
+                legend(legendvec,'Location','NorthWest','AutoUpdate','off'); % FIX: Use AutoUpdate off for Matlab versions R2017a and later
                 % then the error bounds
                 plot(advanced.simFreqDeltaVec,avevec+sevec,'-r',advanced.simFreqDeltaVec,avevec-sevec,'-r','LineWidth',0.5);
                 plot(advanced.simFreqDeltaVec,avevecfreq+sevecfreq,'-.g',advanced.simFreqDeltaVec,avevecfreq-sevecfreq,'-.g','LineWidth',0.5);

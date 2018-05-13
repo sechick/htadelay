@@ -167,7 +167,7 @@ xlim( [ plot_lower, plot_upper] ) ;
 ylim( [ -75000000/10 , 75000000 ] ) ;  
 xlabel( 'Prior mean', 'Fontsize', advanced.bigfontsize ) ; 
 ylabel( 'Difference between expected rewards', 'Fontsize', advanced.bigfontsize) ; 
-legend( 'Optimal Bayes One Stage', 'Fixed (= trial sample size)', 'Location', 'northeast' ) ; 
+legend( 'Optimal Bayes One Stage', 'Fixed (= trial sample size)', 'Location', 'northeast', 'AutoUpdate', 'Off' ) ; 
 hold on ; 
 plot( advanced.simFreqDeltaVec, diff_zero, ':k','LineWidth',linewid ) ; 
 % MF 08/03: Steve's code for SEs: these correctly compute SE estimate when
@@ -246,7 +246,7 @@ ylim( [ 0.9, 1 ] ) ;
 hold on ; 
 xlabel( 'Prior mean', 'Fontsize', advanced.bigfontsize ) ; 
 ylabel( 'Proportion of correct decisions', 'Fontsize', advanced.bigfontsize ) ; 
-legend( 'Optimal Bayes Sequential',  'Fixed (= trial sample size)', 'Optimal Bayes One Stage', 'Position',[220,65,10,10] ) ;
+legend( 'Optimal Bayes Sequential',  'Fixed (= trial sample size)', 'Optimal Bayes One Stage', 'AutoUpdate', 'Off');%'Position',[220,65,10,10] ) ;
 hold on ; 
 lohivec = [ 0.9, 1 ] ;
 UtilPlotABCD( basic, advanced, mat, ishoriz, ist0, lohivec ); 
@@ -263,7 +263,7 @@ Optfix_4 =  [ mat.simBayesOut.NoStatsOpt_fix4 ] ;
 p_basic.numpairs = basic.numpairs .* ones( 1, length( advanced.simFreqDeltaVec ) ) ; 
 plot(  advanced.simFreqDeltaVec, ENumSeenAve', '--k', advanced.simFreqDeltaVec, p_basic.numpairs, '-.k', advanced.simFreqDeltaVec, Optfix_4, 'k','LineWidth',linewid ) ; 
 hold on ; 
-legend( 'Optimal Bayes Sequential',  'Fixed (= trial sample size)', 'Optimal Bayes One Stage', 'Location', 'northeast' ) ;
+legend( 'Optimal Bayes Sequential',  'Fixed (= trial sample size)', 'Optimal Bayes One Stage', 'Location', 'northeast', 'AutoUpdate', 'Off') ;
 hold on ; 
 ylim( [ 0, max([max(ENumSeenAve) max(p_basic.numpairs)  max(Optfix_4)])*1.1 ] ) ; 
 %plot_upper = 15000 ; % set upper limit of plot region ( + / 

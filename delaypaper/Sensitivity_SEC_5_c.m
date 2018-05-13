@@ -35,7 +35,7 @@ for i=1:veclen
     hold on;
 end
 if length(legendvec) > 1 
-         legend(legendvec,'Location','NorthWest'); 
+         legend(legendvec,'Location','NorthWest','AutoUpdate','Off'); 
 end;
 i=1;
 %    UtilResizeFigureToBounds(mat);
@@ -98,7 +98,7 @@ for i=1:veclen
     hold on;
 end
 if length(legendvec) > 1 
-    legend(legendvec,'Location','NorthWest'); 
+    legend(legendvec,'Location','NorthWest','AutoUpdate','Off'); 
 end;
 i=1;
 %    UtilResizeFigureToBounds(mat);
@@ -129,7 +129,7 @@ for i=1:veclen
     hold on;
 end
 if length(legendvec) > 1 
-    legend(legendvec,'Location','NorthWest'); 
+    legend(legendvec,'Location','NorthWest','AutoUpdate','Off'); 
 end;
 i=1;
 %    UtilResizeFigureToBounds(mat);
@@ -157,7 +157,7 @@ for i=1:veclen
     hold on;
 end
 if length(legendvec) > 1 
-    legend(legendvec,'Location','NorthWest'); 
+    legend(legendvec,'Location','NorthWest','AutoUpdate','Off'); 
 end;
 for i=1:veclen    % Plot the A, B, C, D
     plot(advancedvec(i).simFreqDeltaVec,matvec(i).outBayes.ENumSeenAve(:),strcat(mycode{1+mod(i-1,length(mycode))},mycolor{1+mod(i-1,length(mycolor))} ),'LineWidth',linewid);
@@ -195,7 +195,7 @@ for i=1:veclen
     
 end
 if length(legendvec) > 1 
-    legend(legendvec,'Location','NorthEast'); 
+    legend(legendvec,'Location','NorthEast','AutoUpdate','Off'); 
 end;
 for i=1:veclen
     plot(matvec(i).tvec,matvec(i).bndlower,strcat(mycode{1+mod(i-1,length(mycode))},mycolor{1+mod(i-1,length(mycolor))} ),'LineWidth',linewid);
@@ -248,7 +248,7 @@ for i=1:veclen
     hold on;
 end
 if length(legendvec) > 1 
-    legend(legendvec,'Location','NorthEast'); 
+    legend(legendvec,'Location','NorthEast','AutoUpdate','Off'); 
 end;
 for i=1:veclen
     plot(matvec(i).tvec-basicvec(i).tau,matvec(i).bndlower,strcat(mycode{1+mod(i-1,length(mycode))},mycolor{1+mod(i-1,length(mycolor))} ),'LineWidth',linewid);

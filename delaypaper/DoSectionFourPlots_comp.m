@@ -61,8 +61,8 @@ hold off ;
 tmpfontsize = 10;
 plot( paths( 1:outtime6, 1 )', paths( 1 : outtime6, 7 )', 'k', paths( outtime6 + 1:decidetime6, 1 )', paths( outtime6 + 1:decidetime6, 7 )', ':k' ,'LineWidth',1 ) ; 
 hold on ; 
-%rect=[1200,-5000,100,100];
-lgd=legend( 'Actual Stage II (observing and sampling)', 'Actual Stage III (observing only)','Position',[220,55,10,10], 'Fontsize', tmpfontsize) ; 
+%rect=[1200,-5000,100,100]; %,'Position',[220,55,10,10], 'Fontsize', tmpfontsize
+lgd=legend( 'Actual Stage II (observing and sampling)', 'Actual Stage III (observing only)', 'AutoUpdate', 'Off') ; 
 set(lgd,'FontSize',tmpfontsize);
 set(gca,'FontSize',40)
 % plot lower Stage 0 boundary
@@ -155,7 +155,7 @@ xlim( [ plot_lower, plot_upper] ) ;
 ylim( [ -200000, 1000000 ] ) ; % Comparator
 xlabel( 'Prior mean', 'Fontsize', advanced.bigfontsize ) ; 
 ylabel( 'Difference between expected rewards', 'Fontsize', advanced.bigfontsize) ; 
-legend( 'Optimal Bayes One Stage', 'Fixed', 'Location', 'north' ) ; 
+legend( 'Optimal Bayes One Stage', 'Fixed', 'Location', 'north' , 'AutoUpdate', 'Off') ; 
 hold on ; 
 % MF 08/03: Steve's code for SEs: these correctly compute SE estimate when
 % output is run with CRN across experiments.
@@ -231,7 +231,7 @@ xlim( [ plot_lower, plot_upper] ) ;
 hold on ; 
 xlabel( 'Prior mean', 'Fontsize', advanced.bigfontsize ) ; 
 ylabel( 'Proportion of correct decisions', 'Fontsize', advanced.bigfontsize ) ; 
-legend( 'Optimal Bayes Sequential',  'Fixed', 'Optimal Bayes One Stage', 'Location', 'north' ) ;
+legend( 'Optimal Bayes Sequential',  'Fixed', 'Optimal Bayes One Stage', 'Location', 'South' ,'AutoUpdate', 'Off') ;
 hold on ; 
 lohivec = [ 0.9, 1 ] ;
 UtilPlotABCD( basic, advanced, mat, ishoriz, ist0, lohivec ); 
@@ -257,7 +257,7 @@ xlim( [ plot_lower,plot_upper] ) ;
 hold on ; 
 xlabel( 'Prior mean', 'Fontsize', advanced.bigfontsize ) ; 
 ylabel( 'Expected number of samples' , 'Fontsize', advanced.bigfontsize) ; 
-legend( 'Optimal Bayes Sequential',  'Fixed', 'Optimal Bayes One Stage', 'Location', 'north' ) ;
+legend( 'Optimal Bayes Sequential',  'Fixed', 'Optimal Bayes One Stage', 'Location', 'North' , 'AutoUpdate', 'Off') ;
 hold on ; 
 lohivec = [ 0, 2100 ] ;
 UtilPlotABCD( basic, advanced, mat, ishoriz, ist0, lohivec ); 
@@ -276,7 +276,7 @@ xlim( [ plot_lower, plot_upper] ) ;
 hold on ; 
 xlabel( 'Prior mean', 'Fontsize', advanced.bigfontsize ) ; 
 ylabel( 'Prob(reversing decision with pipeline data)', 'Fontsize', advanced.bigfontsize ) ; 
-%legend( 'Optimal Bayes Sequential',  'Fixed', 'Optimal Bayes One Stage', 'Location', 'north' ) ;
+%legend( 'Optimal Bayes Sequential',  'Fixed', 'Optimal Bayes One Stage', 'Location', 'North', 'AutoUpdate', 'Off' ) ;
 hold on ; 
 lohivec = [ 0.0, min(1.0, 1.2*max(mat.outBayes.PrReversalAve)) ] ;
 UtilPlotABCD( basic, advanced, mat, ishoriz, ist0, lohivec ); 

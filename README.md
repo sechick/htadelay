@@ -36,4 +36,8 @@ The code computes optimal stopping times for sequential experiments when samples
     b. MC results label 'Frequentist' or 'Freq.' means that sample paths were run by fixing all W_i to the value of mu0 on the axis
     The values of mu0 are then varied for both of those types of plots.
 
+# Updates
+
+1. 2018 04 13: Updated certain plotting functions. As of Matlab 2017a, the 'legend' functionality has changed. Code was updated to avoid certain spurious entries in the legends of some of the graphs. Need to include 'AutoUpdate', 'Off' in legends to avoid the unwanted legend entries.
+
 Some code under development is built to allow for certain functionality when assuming sampling variances are unknown. This is in progress....

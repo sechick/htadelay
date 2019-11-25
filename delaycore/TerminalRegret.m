@@ -32,6 +32,7 @@ if nargin < 5       % If last argument is missing, assume that no change is allo
     [~, advanced] = DelayInputConstructor();
 end
 nochangeallowed = advanced.nochangeallowed;
+isOCTAVE = exist ('OCTAVE_VERSION', 'builtin'); % SEC: 2019 11 25: If running on Octave, different integration parameters required for quadrature. (integral() function)
 DOINTEGRAL = advanced.DoRegretIntegral;
 NUMSTEPS = advanced.NumPointsQuadrature;
 if nargin < 4
@@ -59,10 +60,17 @@ if predvarsample > 0
         pcs=zeros(size(valuevec));
 
         if sum(tmpvec) % in area where potentially poor approximation, do numerical integration
-%            eoc(tmpvec) = integral(@(x) poststd*PsiNorm(abs(x+valuevec(tmpvec))/poststd)*normpdf(x,0,predstd), ...
-%                -4*predstd, +4*predstd,'ArrayValued',true,'RelTol',1e-2);
-            pcs(tmpvec) = integral(@(x) normcdf(abs(x+valuevec(tmpvec))/poststd)*normpdf(x,0,predstd), ...
-                -4*predstd, +4*predstd,'ArrayValued',true,'RelTol',1e-2);
+            if isOCTAVE
+    %            eoc(tmpvec) = integral(@(x) poststd*PsiNorm(abs(x+valuevec(tmpvec))/poststd)*normpdf(x,0,predstd), ...
+    %                -4*predstd, +4*predstd,'ArrayValued',true,'AbsTol',advanced.dmu * 1e-2);
+                pcs(tmpvec) = integral(@(x) normcdf(abs(x+valuevec(tmpvec))/poststd)*normpdf(x,0,predstd), ...
+                    -4*predstd, +4*predstd,'ArrayValued',true,'AbsTol', 5e-3);
+            else
+    %            eoc(tmpvec) = integral(@(x) poststd*PsiNorm(abs(x+valuevec(tmpvec))/poststd)*normpdf(x,0,predstd), ...
+    %                -4*predstd, +4*predstd,'ArrayValued',true,'RelTol',1e-2);
+                pcs(tmpvec) = integral(@(x) normcdf(abs(x+valuevec(tmpvec))/poststd)*normpdf(x,0,predstd), ...
+                    -4*predstd, +4*predstd,'ArrayValued',true,'RelTol',1e-2);
+            end
         end
         
         % do quadrature approx outside of that range, as it is much faster

@@ -23,11 +23,11 @@ basic.numpairs = 529 ;          % number of pairwise allocations reported by stu
 %basic.sigma = stder * sqrt(numpairs);
 %basic.mu0=postmean;
 basic.t0 = 20 ;                     % Assumption 
-basic.sigma = 17538 ;               % Derived from Cohen et al. (2004). See also Table 1 of Pertile et al. (2010)
+basic.sigma = 17538 ;               % Derived from Cohen et al. ('d'4). See also Table 1 of Pertile et al. (2010)
 basic.annualdiscountrate = 0.01 ;         % 0.03 assumed 
 basic.ICost = 0 ;                   % Assumption 
 basic.TMax = 2000 ;              % Assumption 
-basic.c = 200;                  % Assumption
+basic.c = 'd';                  % Assumption
 basic.mu0 = 0;
 basic.z  = 0 ; % critical value for classical statistical inference test (e.g. 1.96)
 basic.mumax = 10 * 50 * 250000 / (basic.t0 + basic.TMax) ; % 500000 was the max s_Y in Martin-Paolo code for the same application
@@ -55,7 +55,8 @@ advanced.nochangeallowed = false;    % set to false (the better default) meaning
 
 advanced.MinGridPerStdev = 50;    % minimum number of grid points per stdev of output, or negative to use dt=1
 % advanced.MinGridPerStdev = -0.01;    % if this is negative, code tries to use its negative as the delta-t
-% advanced.MinGridPerStdev = 200; 
+% advanced.MinGridPerStdev = 'd'; 
+advanced.simNumReps = 400;
 
 % For plotting
 advanced.smoothed = true;   % true or false if curve smoothing is desired.
@@ -102,9 +103,3 @@ end
 % Figure 9
 
 %basic.online = true;
-
-
-
-
-
-

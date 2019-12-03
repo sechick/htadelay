@@ -25,6 +25,8 @@ if ~exist('fignum','var'), fignum = 20; end;
 
 advanced.dirstring = 'Stents_sensit_tau';
 advanced.graphicextension = 'eps';
+
+doProductionRuns = false;
 if doProductionRuns
     ProductionReps = PRODUCTIONREPS;  %15000
     advanced.MinGridPerStdev = PRODUCTIONNUMBERSTD; %200;

@@ -64,7 +64,7 @@ LocalDelaySetPaths;  % Default case: Sets up PATH of Matlab to get code for runn
 % OPTION 1: Construct default values, and then set those values
 % accordingly.
 [basic, advanced] = DelayInputConstructor();
-basic.c = 2.1; basic.theta = 0.999;
+basic.c = 2.1; basic.theta = 0.999; basic.PPatients = 42000;
 advanced.filestring = 'test'; advanced.dirstring = 'wow'; advanced.simNumReps = 500; 
 advanced.saveplot = 1; advanced.DOPLOT = false;
 rval = true;
@@ -72,7 +72,7 @@ rval = true;
 
 % OPTION 2: Use the constructor while specifying {field, value}
 % combinations as follows.
-somebasicflags = {'c', 2.1, 'theta', 0.999};
+somebasicflags = {'c', 2.1, 'theta', 0.999, 'PPatients', 42000 };
 someadvancedflags = { 'filestring', 'test', 'dirstring', 'wow', 'simNumReps', 500, 'saveplot', 1, 'DOPLOT', false };
 [basic, advanced] = DelayInputConstructor(somebasicflags,someadvancedflags); % create the structures
 [basic, advanced, rval, msgs] = DelayInputValidator( basic, advanced ) % now, validate the structure and compute some intermediave values
@@ -106,6 +106,26 @@ if rval
 else
     msgs
 end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% CAN SET FOLLOWING VALUES DEPENDING ON ACCURACY IN PLOTS DESIRED.
+doProductionRuns = true;    % TO BE SET BY END USER: Set to true if lots of replications desired, false if short test is desired.
+doProductionRuns = false;    % TO BE SET BY END USER: Set to true if lots of replications desired, false if short test is desired.
+doSaveMatFile = false;
+
+%%%% the following can be customized to increase to to decrease accuracy of
+%%%% both test run mode and production run mode. test run is fast but not
+%%%% accurate, production mode is for generating higher resolution graphs.
+PRODUCTIONREPS = 15000;
+PRODUCTIONNUMBERSTD = 200;
+PRODUCTIONNUMBERSTD = 120;
+
+TESTREPS = 200;              % Allow end user to configure number of simulation replications
+TESTNUMPERSTD = 30;          % and fineness of grid for PDE computations
+
+Drive_stents_sensit_tau();   % run the experiments which change the number of patients.
+
 
 %%%%%%%%%%%%%%% FIX FIX FIX TESTED TO HERE %%%%%%%%%%%%%%%
 

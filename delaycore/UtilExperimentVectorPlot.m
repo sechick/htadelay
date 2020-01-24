@@ -25,8 +25,8 @@ function [ figout ] = UtilExperimentVectorPlot( fignum, basicvec, advancedvec, l
 % coded by steve.
 
 veclen = length(matvec);
-mycode = {'-o', '-+', '-x', '-s', '-d', '-^', '-v'} ;
-mycode2 ={ 'o',  '.',  'x',  's',  'd',  '^',  'v'} ;
+mycode = {'-o', '-+', '-x', '-s', '-d', '-^', '-v'} ; % for bayes related stats (means sampled from prior distribution)
+mycode2 ={ 'o',  '.',  'x',  's',  'd',  '^',  'v'} ; % for comparator (e.g. frequentist stats from simulations)
 
 if veclen <= 1
     'UtilExperimentVectorPlot.m called with fewer than 2 experiments in vector. Normally should be called with at least 2, based on output from TestDelayIterate'

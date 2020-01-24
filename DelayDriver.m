@@ -121,10 +121,166 @@ PRODUCTIONREPS = 15000;
 PRODUCTIONNUMBERSTD = 200;
 PRODUCTIONNUMBERSTD = 120;
 
-TESTREPS = 200;              % Allow end user to configure number of simulation replications
+TESTREPS = 300;              % Allow end user to configure number of simulation replications
 TESTNUMPERSTD = 30;          % and fineness of grid for PDE computations
 
-Drive_stents_sensit_tau();   % run the experiments which change the number of patients.
+%Drive_stents_sensit_tau();   % run the experiments which change the number of patients.
+
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% EXAMPLES FOR DOING SENSITIVITY ANALYSIS  %%
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 1. Set up the basic set of parameters
+%% 2. Set up stats for computational and plotting information
+%% 3. Validate the basic set of statistics
+%% 4. Pick the parameter you want to vary, and put it into 'fieldname'. the choice of parameter
+%%    can be from typing 'basic' into matlab, to see what parameters are available, or 'advanced'.
+%%    specify whether the parameter you chose is basic or not by settle basicflag to true or false.
+%%    Then specify the range of values to be tested in fieldvec. Set 'subtitle' to have a title for
+%%    the plots for the sensitivity analysis.
+%% 5 Call routines to first compute all of the analysis for each value of the parameter, then plot 
+%%   the data from the analysis.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Here is an example sensitivity analysis for varying the variable cost of sampling, using an example 
+%% with parameters similar to the 'stents' example from the JRSSB paper.
+%% 1. Set up the basic set of parameters
+if ~exist('fignum','var'), fignum = 20; end;
+[basic, advanced] = SetStents();
+basic.theta=1.0;    % enforce no discounting
+%% 2. Set up stats for computational and plotting information
+advanced.MinGridPerStdev = 20; % these are smaller than usual as we iterate multiple graphs
+advanced.NumGridsForContours = 2 * advanced.MinGridPerStdev; 
+basic.mumin = 1.5*basic.mumin;
+basic.mumax = 1.5*basic.mumax;
+%% 3. Validate the basic set of statistics
+[basic, advanced, rval, msgs] = DelayInputValidator( basic, advanced );
+if ~rval, msgs, end;
+%% 4. Pick the parameter you want to vary, and put it into 'fieldname'. the choice of parameter
+%%    can be from typing 'basic' into matlab, to see what parameters are available, or 'advanced'.
+%%    specify whether the parameter you chose is basic or not by settle basicflag to true or false.
+%%    Then specify the range of values to be tested in fieldvec. Set 'subtitle' to have a title for
+%%    the plots for the sensitivity analysis.
+fieldname = 'c';       % pick the name of the field whose values are to be changed
+basicflag = true;           % set to true if the field is in the 'basic' structure, false if it is in the 'advanced' structure
+fieldvec = [20 1000 5000];    % create an array of values to rotate through for that field 
+subtitle = 'Different sampling costs';    % give a short subtitle name for the figures
+fmodifier = fieldname;      % used to diferentiate file name if it is used for saving plots
+%% 5 Call routines to first compute all of the analysis for each value of the parameter, then plot 
+%%   the data from the analysis.
+[fignum, basicvec, advancedvec, legendvec, matvec] = TestDelayIterate(fignum,basic,advanced,basicflag,fieldname,fieldvec,subtitle,fmodifier);
+[fignum] = UtilExperimentVectorPlot( fignum, basicvec, advancedvec, legendvec, matvec, subtitle,fmodifier);
+disp('1. In some graphs, points are connected by a solid line. In some, points are connected without line.');
+disp(' --- a. Those with lines: Bayesian. statistics reflect results when unknown means are sampled from prior distribution, then algorithms are applied.');
+disp(' --- b. Those without lines: Frequentist. statistics reflect results when mean is fixed to the mean on the axis. e.g. for computing power.');
+disp('2. Some graphs also have dashed lines to reflect confidence intervals, in the case that some results are computed from Monte Carlo simulations of trials.');
+disp('3. More graphs are generated than might be usable - please ignore the extras which arise due to automation');
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Here is an example sensitivity analysis for varying the rate of recruitment, so that tau is different, using an example 
+%% with parameters similar to the 'stents' example from the JRSSB paper. Note that tau is varied here by assuming that
+%% the rate of recruitment were changed. another way to change tau is to keep rate of recruitment the same, while changing
+%% the time delay until samples are observed. this is because tau = number of patient pairs until samples start being observed =
+%% the rate of recruitment multiplied by the time delay in observing outcomes. Changing time delay would likely change the sample
+%% variance in real applications. Thus we change rate of recruitment. And rate of recruitment is an operating characteristic
+%% of the trial.
+%% 1. Set up the basic set of parameters
+if ~exist('fignum','var'), fignum = 20; end;
+[basic, advanced] = SetStents();
+basic.theta=1.0;    % enforce no discounting
+%% 2. Set up stats for computational and plotting information
+advanced.MinGridPerStdev = 20; % these are smaller than usual as we iterate multiple graphs
+advanced.NumGridsForContours = 2 * advanced.MinGridPerStdev; 
+basic.mumin = 1.5*basic.mumin;
+basic.mumax = 1.5*basic.mumax;
+%% 3. Validate the basic set of statistics
+[basic, advanced, rval, msgs] = DelayInputValidator( basic, advanced );
+if ~rval, msgs, end;
+%% 4. Pick the parameter you want to vary, and put it into 'fieldname'. the choice of parameter
+%%    can be from typing 'basic' into matlab, to see what parameters are available, or 'advanced'.
+%%    specify whether the parameter you chose is basic or not by settle basicflag to true or false.
+%%    Then specify the range of values to be tested in fieldvec. Set 'subtitle' to have a title for
+%%    the plots for the sensitivity analysis.
+fieldname = 'tau';       % pick the name of the field whose values are to be changed
+basicflag = true;           % set to true if the field is in the 'basic' structure, false if it is in the 'advanced' structure
+fieldvec = [907 605 453];    % create an array of values to rotate through for that field 
+subtitle = 'Different recruitment rates change tau';    % give a short subtitle name for the figures
+fmodifier = fieldname;      % used to diferentiate file name if it is used for saving plots
+%% 5 Call routines to first compute all of the analysis for each value of the parameter, then plot 
+%%   the data from the analysis.
+[fignum, basicvec, advancedvec, legendvec, matvec] = TestDelayIterate(fignum,basic,advanced,basicflag,fieldname,fieldvec,subtitle,fmodifier);
+[fignum] = UtilExperimentVectorPlot( fignum, basicvec, advancedvec, legendvec, matvec, subtitle,fmodifier);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Here is an example sensitivity analysis for varying the discount factor with parameters otherwise 
+%% similar to the 'stents' example from the JRSSB paper. 
+%% 1. Set up the basic set of parameters
+if ~exist('fignum','var'), fignum = 20; end;
+[basic, advanced] = SetStents();
+%% 2. Set up stats for computational and plotting information
+advanced.MinGridPerStdev = 20; % these are smaller than usual as we iterate multiple graphs
+advanced.NumGridsForContours = 2 * advanced.MinGridPerStdev; 
+basic.mumin = 1.5*basic.mumin;
+basic.mumax = 1.5*basic.mumax;
+%% 3. Validate the basic set of statistics
+[basic, advanced, rval, msgs] = DelayInputValidator( basic, advanced );
+if ~rval, msgs, end;
+%% 4. Pick the parameter you want to vary, and put it into 'fieldname'. the choice of parameter
+%%    can be from typing 'basic' into matlab, to see what parameters are available, or 'advanced'.
+%%    specify whether the parameter you chose is basic or not by settle basicflag to true or false.
+%%    Then specify the range of values to be tested in fieldvec. Set 'subtitle' to have a title for
+%%    the plots for the sensitivity analysis.
+fieldname = 'theta';       % pick the name of the field whose values are to be changed
+basicflag = true;           % set to true if the field is in the 'basic' structure, false if it is in the 'advanced' structure
+annualdiscountrate = [0 0.001 0.01]; patientsperyear = 907;
+fieldvec = exp( - log(1+annualdiscountrate) / patientsperyear ); 
+subtitle = 'Different recruitment rates change tau';    % give a short subtitle name for the figures
+fmodifier = fieldname;      % used to diferentiate file name if it is used for saving plots
+%% 5 Call routines to first compute all of the analysis for each value of the parameter, then plot 
+%%   the data from the analysis.
+[fignum, basicvec, advancedvec, legendvec, matvec] = TestDelayIterate(fignum,basic,advanced,basicflag,fieldname,fieldvec,subtitle,fmodifier);
+[fignum] = UtilExperimentVectorPlot( fignum, basicvec, advancedvec, legendvec, matvec, subtitle,fmodifier);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% TEST DIFFERENCE IN BOUNDARIES WHEN SAMPLE VARIANCE IS UNKNOWN, WITH AN
+%%%% INITIAL ESTIMATE OF VALUE WHICH IS THEN UPDATED AS SAMPLE PATHS ARE
+%%%% OBSERVED, AS COMPARED TO CASE WHEN SAMPLE VARIANCE IS KNOWN.
+if ~exist('fignum','var'), fignum = 20; end;
+[basic, advanced] = SetStents();
+%[basic, advanced] = SetBaseParameters();
+advanced.MinGridPerStdev = 20; % these are smaller than usual as we iterate multiple graphs
+advanced.NumGridsForContours = 2 * advanced.MinGridPerStdev; 
+basic.theta=1.0;    % enforce no discounting
+basic.mumin = 1.5*basic.mumin;
+basic.mumax = 1.5*basic.mumax;
+[basic, advanced, rval, msgs] = DelayInputValidator( basic, advanced );
+if ~rval, msgs, end;
+fieldname = 'UnkVariance';       % pick the name of the field whose values are to be changed
+basicflag = false;           % set to true if the field is in the 'basic' structure, false if it is in the 'advanced' structure
+fieldvec = [true, false];    % create an array of values to rotate through for that field 
+subtitle = 'Unknown and Known Variance';    % give a short subtitle name for the figures
+fmodifier = fieldname;      % used to diferentiate file name if it is used for saving plots
+[fignum, basicvec, advancedvec, legendvec, matvec] = TestDelayIterate(fignum,basic,advanced,basicflag,fieldname,fieldvec,subtitle,fmodifier);
+[fignum] = UtilExperimentVectorPlot( fignum, basicvec, advancedvec, legendvec, matvec, subtitle,fmodifier);
+
+%%%%%%%%%%%%%%% FIX FIX FIX TESTED TO HERE %%%%%%%%%%%%%%%
+if ~exist('fignum','var'), fignum = 20; end;
+[basic, advanced] = SetStents();
+%[basic, advanced] = SetBaseParameters();
+advanced.MinGridPerStdev = 20; % these are smaller than usual as we iterate multiple graphs
+advanced.NumGridsForContours = 2 * advanced.MinGridPerStdev; 
+basic.theta=1.0;    % enforce no discounting
+basic.mumin = 1.5*basic.mumin;
+basic.mumax = 1.5*basic.mumax;
+[basic, advanced, rval, msgs] = DelayInputValidator( basic, advanced );
+if ~rval, msgs, end;
+% TO T
+fieldname = 'c';       % pick the name of the field whose values are to be changed
+basicflag = true;           % set to true if the field is in the 'basic' structure, false if it is in the 'advanced' structure
+fieldvec = [20 1000 5000];    % create an array of values to rotate through for that field 
+subtitle = 'Different sampling costs';    % give a short subtitle name for the figures
+fmodifier = fieldname;      % used to diferentiate file name if it is used for saving plots
+[fignum, basicvec, advancedvec, legendvec, matvec] = TestDelayIterate(fignum,basic,advanced,basicflag,fieldname,fieldvec,subtitle,fmodifier);
+[fignum] = UtilExperimentVectorPlot( fignum, basicvec, advancedvec, legendvec, matvec, subtitle,fmodifier);
 
 
 %%%%%%%%%%%%%%% FIX FIX FIX TESTED TO HERE %%%%%%%%%%%%%%%

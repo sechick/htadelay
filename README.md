@@ -1,4 +1,4 @@
-# Sequential Experimentation with Delay 
+# Sequential Experimentation with Delay.
 
 ALL RIGHTS RESERVED BY AUTHORS. Code provided as is for noncommercial, academic usage only.
 

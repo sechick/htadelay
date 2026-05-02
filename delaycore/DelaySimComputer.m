@@ -237,7 +237,7 @@ decidetime4 = outtime4 + (outtime4 > 0) * basic.tau;
 
 % Now, compute what decison was made... need to check mean tau time units
 % after boundary was crossed (unless no change is allowed post decision
-getpostrows=postmean(1+hittime,:);
+getpostrows=postmean(min(1+hittime,length(bndtvec)),:);
 hitmean = diag(getpostrows);  % find mean at time all info for decision is available
 getpostrows=postmean(1+outtime,:);
 decisionmean = diag(getpostrows);  % find mean at time all info for decision is available
